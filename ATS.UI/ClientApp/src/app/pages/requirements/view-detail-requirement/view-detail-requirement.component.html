@@ -1,0 +1,541 @@
+<div class="p-grid mobile-display-block">
+    <div class="p-col-12 p-pt-0">
+        <div class="card p-p-0" style="overflow: hidden;">
+            <div class="p-col-12 p-pb-0">
+                <div class="p-fluid p-formgrid p-grid mobile-display-block">
+                    <div class="p-md-10 p-pb-0" style="font-size:20px;">
+                        {{addEditHeaderText}}
+                    </div>
+                    <div class="p-md-2 p-pt-0 p-pb-0" *ngIf="requirementDetail?.requirementID !== 0">
+                        <div style="display: flex;">
+                            <button pButton pRipple type="button" label="Submit" *ngIf="requirementDetail?.status.toUpperCase() !== requirementStatusConstants.MISS && requirementDetail?.status.toUpperCase() !== requirementStatusConstants.SUCCESS " class="p-button-raised p-mr-2 p-mb-2" (click)="submit()"></button>
+                            <!--<button pButton pRipple type="button" label="Submit" [ngClass]="{'disabled': requirementDetail?.status.toUpperCase() === requirementStatusConstants.MISS || requirementDetail?.status.toUpperCase() === requirementStatusConstants.SUCCESS }" class="p-button-raised p-mr-2 p-mb-2" (click)="submit()"></button>-->
+                            <button pButton pRipple type="button" label="Back" class="p-button-raised p-button-danger p-mr-2 p-mb-2" style="margin-right: 0px !important;" (click)="Cancel()"></button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="p-col-12 p-pt-0 hidden-web">
+                <div class="p-fluid p-formgrid">
+                    <fieldset style="border: 1px solid #ced4da !important; padding-left: 0px;">
+                        <div class="p-grid p-pb-0 p-pt-2 view-detail">
+                            <div class="p-md-4 p-pb-0 p-pt-0 p-pr-0 p-d-flex removed-padding">
+                                <label class="p-md-4 p-pl-0 p-pr-0 txt-align" for="firstname6">Company : </label>
+                                <span class="p-md-8 p-pl-2">
+                                    {{requirementDetail?.companyName}}
+                                </span>
+                            </div>
+                            <div class="p-md-4 p-pb-0 p-pt-0 p-d-flex removed-padding">
+                                <label class="p-md-4 p-pl-0 p-pr-0 txt-align" for="firstname6">Client Name : </label>
+                                <span class="p-md-8 p-pl-2">
+                                    {{isPublicID !== 1 ? requirementDetail?.clientName : '*****'}}
+                                </span>
+                            </div>
+                            <div class="p-md-4 p-pb-0 p-pt-0 p-d-flex removed-padding">
+                                <label class="p-md-4 p-pl-0 p-pr-0 txt-align" for="firstname6">Client Type : </label>
+                                <span class="p-md-8 p-pl-2">
+                                    {{requirementDetail?.clientType}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="p-grid p-pb-0 view-detail">
+                            <div class="p-md-4 p-pb-0 p-pt-0 p-pr-0 p-d-flex removed-padding">
+                                <label class="p-md-4 p-pl-0 p-pr-0 txt-align" for="firstname6">Job ID : </label>
+                                <span class=" p-md-8 p-pl-2">
+                                    {{requirementDetail?.jobID}}
+                                </span>
+                            </div>
+                            <div class="p-md-8 p-pb-0 p-pt-0 p-d-flex removed-padding">
+                                <label class="p-md-2 p-pl-0 p-pr-0 txt-align" for="firstname6">Job Title : </label>
+                                <span class="p-md-10 p-pl-2">
+                                    {{requirementDetail?.jobTitle}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="p-grid p-pb-0 view-detail">
+                            <div class="p-md-4 p-pb-0 p-pt-0 p-pr-0 p-d-flex removed-padding">
+                                <label class="p-md-4 p-pl-0 p-pr-0 txt-align" for="firstname6">Requirement : </label>
+                                <span class="p-md-8 p-pl-2">
+                                    {{requirementDetail?.requirementType}}
+                                </span>
+                            </div>
+                            <div class="p-md-4 p-pb-0 p-pt-0 p-d-flex removed-padding">
+                                <label class="p-md-4 p-pl-0 p-pr-0 txt-align" for="firstname6">Duration : </label>
+                                <span class="p-md-8 p-pl-2">
+                                    {{requirementDetail?.duration +' months'}}
+                                </span>
+                            </div>
+                            <div class="p-md-4 p-pb-0 p-pt-0 p-d-flex removed-padding">
+                                <label class="p-md-4 p-pl-0 p-pr-0 txt-align" for="firstname6">Primary Skills : </label>
+                                <span class="p-md-8 p-pl-2">
+                                    {{requirementDetail?.primarySkills}}
+                                </span>
+                            </div>
+
+                        </div>
+                        <div class="p-grid p-pb-0 view-detail">
+                            <div class="p-md-4 p-pr-0 p-pb-0 p-pt-0 p-d-flex removed-padding">
+                                <label class="p-md-4 p-pl-0 p-pr-0 txt-align" for="firstname6">Client Rate : </label>
+                                <span class="p-md-8 p-pl-2">
+                                    {{isPublicID !== 1 ? requirementDetail?.clientRate : '***'}}
+                                </span>
+                            </div>
+                            <div class="p-md-4 p-pb-0 p-pt-0 p-d-flex removed-padding">
+                                <label class="p-md-4 p-pl-0 p-pr-0 txt-align" for="firstname6">Pay Rate Type : </label>
+                                <span class="p-md-8 p-pl-2">
+                                    {{requirementDetail?.payRateType}}
+                                </span>
+                            </div>
+                            <div class="p-md-4 p-pb-0 p-pt-0 p-d-flex removed-padding">
+                                <label class="p-md-4 p-pl-0 p-pr-0 txt-align" for="firstname6"> {{isPayRateText}} : </label>
+                                <span class="p-md-8 p-pl-2">
+                                    {{requirementDetail?.payRate}}
+                                </span>
+                            </div>
+
+                        </div>
+                        <div class="p-grid p-pb-0 view-detail">
+                            <div class="p-md-4 p-pr-0 p-pb-0 p-pt-0 p-d-flex removed-padding">
+                                <label class="p-md-4 p-pl-0 p-pr-0 txt-align" for="firstname6">City : </label>
+                                <span class="p-md-8 p-pl-2">
+                                    {{requirementDetail?.city}}
+                                </span>
+                            </div>
+                            <div class="p-md-4 p-pb-0 p-pt-0 p-d-flex removed-padding">
+                                <label class="p-md-4 p-pl-0 p-pr-0 txt-align" for="firstname6">State : </label>
+                                <span class="p-md-8 p-pl-2">
+                                    {{requirementDetail?.stateName}}
+                                </span>
+                            </div>
+                            <div class="p-md-4 p-pb-0 p-pt-0 p-d-flex removed-padding">
+                                <label class="p-md-4 p-pl-0 p-pr-0 txt-align" for="firstname6"> Country : </label>
+                                <span class="p-md-8 p-pl-2">
+                                    {{requirementDetail?.countryName}}
+                                </span>
+                            </div>
+
+                        </div>
+                        <div class="p-grid p-pb-0 view-detail">
+                            <div class="p-md-4 p-pr-0 p-pb-0 p-pt-0 p-d-flex removed-padding">
+                                <label class="p-md-4 p-pl-0 p-pr-0 txt-align" for="firstname6">Remote : </label>
+                                <span class="p-md-8 p-pl-2">
+                                    {{requirementDetail?.isRemote === true ? 'Yes' : 'No'}}
+                                </span>
+                            </div>
+                            <div class="p-md-4 p-pb-0 p-pt-0 p-d-flex removed-padding">
+                                <label class="p-md-4 p-pl-0 p-pr-0 txt-align" for="firstname6">Interview Type : </label>
+                                <span class="p-md-8 p-pl-2">
+                                    {{requirementDetail?.interviewType}}
+                                </span>
+                            </div>
+                            <div class="p-md-4 p-pb-0 p-pt-0 p-d-flex removed-padding">
+                                <label class="p-md-4 p-pl-0 p-pr-0 txt-align" for="firstname6">Status : </label>
+                                <span class="p-md-8 p-pl-2">
+                                    {{requirementDetail?.status}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="p-grid p-pb-0 view-detail">
+                            <div class="p-md-4 p-pr-0 p-pb-0 p-pt-0 p-d-flex removed-padding">
+                                <label class="p-md-4 p-pl-0 p-pr-0 txt-align" for="firstname6" style="white-space: nowrap;"> Hot Requirement : </label>
+                                <span class="p-md-8 p-pl-2">
+                                    {{requirementDetail?.isHotRequirement === true ? 'Yes' : 'No'}}
+                                </span>
+                            </div>
+                            <div class="p-md-4 p-pb-0 p-pt-0 p-d-flex removed-padding">
+                                <label class="p-md-4 p-pl-0 p-pr-0 txt-align" for="firstname6">Public : </label>
+                                <span class="p-md-8 p-pl-2">
+                                    {{requirementDetail?.isPublic === true ? 'Yes' : 'No'}}
+                                </span>
+                            </div>
+                            <div class="p-md-4 p-pb-0 p-pt-0 p-d-flex removed-padding">
+                                <label class="p-md-4 p-pl-0 p-pr-0 txt-align" for="firstname6">Priority : </label>
+                                <span class="p-md-8 p-pl-2">
+                                    {{requirementDetail?.priority}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="p-grid p-pb-0 view-detail removed-padding">
+                            <div class="p-md-4 p-pr-0 p-pb-0 p-pt-0 p-d-flex">
+                                <label class="p-md-4 p-pl-0 p-pr-0 txt-align" for="firstname6"> Assigned To : </label>
+                                <span class="p-md-8 p-pl-2">
+                                    {{requirementDetail?.assignedToName}}
+                                </span>
+                            </div>
+                            <div class="p-md-4 p-pb-0 p-pt-0 p-d-flex removed-padding">
+                                <label class="p-md-4 p-pl-0 p-pr-0 txt-align" for="firstname6">Reviewer : </label>
+                                <span class="p-md-8 p-pl-2">
+                                    {{requirementDetail?.reviewer}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="p-grid p-pb-0 view-detail">
+                            <div class="p-md-12 p-pr-0 p-pb-0 p-pt-0 p-d-flex removed-padding" style="width: 100%;">
+                                <label class="p-md-1 p-pl-0 p-pr-0 txt-align" style="width: 11%;" for="firstname6">Internal Note : </label>
+                                <span class="p-md-11 p-pl-2" style="width: 89%;">
+                                    {{requirementDetail?.internalNote}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="p-grid p-pb-0 view-detail">
+                            <div class="p-md-12 p-pr-0 p-pb-0 p-pt-0 p-d-flex removed-padding" style="width: 100%;">
+                                <label class="p-md-1 p-pl-0 p-pr-0 txt-align" style="width: 11%; white-space: nowrap;"  for="firstname6">Job Description : </label>
+                                <div [innerHTML]="requirementDetail?.jobDesc" class="p-md-11  p-pr-0 " style="width: 89%;">
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+
+
+            <div class="hidden-web hidden-mobile">
+                <div>
+                    <div class="card mobile-card-view " style="padding-bottom: 0.5rem; margin-bottom: 1rem;">
+                        <div class="card-body" style="padding-bottom:0.5rem !important;">
+                            <div class="p-fluid p-formgrid p-grid">
+                                <div class="p-col-12 p-pl-0" style="display: flex;">
+                                    <label class="control-label p-col-5 p-pr-2 mobile-card-view-label">Company :</label>
+                                    <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                        {{requirementDetail?.companyName}}
+                                    </div>
+                                </div>
+                                <div class="p-col-12 p-pl-0" style="display: flex;">
+                                    <label class="control-label p-col-5 p-pr-2 mobile-card-view-label">Client Name :</label>
+                                    <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                        {{isPublicID !== 1 ? requirementDetail?.clientName : '*****'}}
+                                    </div>
+                                </div>
+                                <div class="p-col-12 p-pl-0" style="display: flex;">
+                                    <label class="control-label p-col-5 p-pr-2 mobile-card-view-label">Client Type:</label>
+                                    <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                        {{requirementDetail?.clientType}}
+                                    </div>
+                                </div>
+                                <div class="p-col-12 p-pl-0" style="display: flex;">
+                                    <label class="control-label p-col-5 p-pr-2 mobile-card-view-label">Job ID :</label>
+                                    <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                        {{requirementDetail?.jobID}}
+                                    </div>
+                                </div>
+                                <div class="p-col-12 p-pl-0" style="display: flex;">
+                                    <label class="control-label p-col-5 p-pr-2 mobile-card-view-label">Job Title :</label>
+                                    <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                        {{requirementDetail?.jobTitle}}
+                                    </div>
+                                </div>
+                                <div class="p-col-12 p-pl-0" style="display: flex;">
+                                    <label class="control-label p-col-5 p-pr-2 mobile-card-view-label">Requirement :</label>
+                                    <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                        {{requirementDetail?.requirementType}}
+                                    </div>
+                                </div>
+                                <div class="p-col-12 p-pl-0" style="display: flex;">
+                                    <label class="control-label p-col-5 p-pr-2 mobile-card-view-label">Duration :</label>
+                                    <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                        {{requirementDetail?.duration +' months'}}
+                                    </div>
+                                </div>
+                                <div class="p-col-12 p-pl-0" style="display: flex;">
+                                    <label class="control-label p-col-5 p-pr-2 mobile-card-view-label">Duration :</label>
+                                    <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                        {{requirementDetail?.primarySkills}}
+                                    </div>
+                                </div>
+                                <div class="p-col-12 p-pl-0" style="display: flex;">
+                                    <label class="control-label p-col-5 p-pr-2 mobile-card-view-label">Client Rate :</label>
+                                    <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                        {{isPublicID !== 1 ? requirementDetail?.clientRate : '***'}}
+                                    </div>
+                                </div>
+                                <div class="p-col-12 p-pl-0" style="display: flex;">
+                                    <label class="control-label p-col-5 p-pr-2 mobile-card-view-label">Pay Rate Type :</label>
+                                    <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                        {{requirementDetail?.payRateType}}
+                                    </div>
+                                </div>
+                                <div class="p-col-12 p-pl-0" style="display: flex;">
+                                    <label class="control-label p-col-5 p-pr-2 mobile-card-view-label">{{isPayRateText}} :</label>
+                                    <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                        {{requirementDetail?.payRate}}
+                                    </div>
+                                </div>
+                                <div class="p-col-12 p-pl-0" style="display: flex;">
+                                    <label class="control-label p-col-5 p-pr-2 mobile-card-view-label">City :</label>
+                                    <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                        {{requirementDetail?.city}}
+                                    </div>
+                                </div>
+                                <div class="p-col-12 p-pl-0" style="display: flex;">
+                                    <label class="control-label p-col-5 p-pr-2 mobile-card-view-label">State :</label>
+                                    <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                        {{requirementDetail?.stateName}}
+                                    </div>
+                                </div>
+                                <div class="p-col-12 p-pl-0" style="display: flex;">
+                                    <label class="control-label p-col-5 p-pr-2 mobile-card-view-label">Country :</label>
+                                    <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                        {{requirementDetail?.countryName}}
+                                    </div>
+                                </div>
+                                <div class="p-col-12 p-pl-0" style="display: flex;">
+                                    <label class="control-label p-col-5 p-pr-2 mobile-card-view-label">Remote :</label>
+                                    <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                        {{requirementDetail?.isRemote === true ? 'Yes' : 'No'}}
+                                    </div>
+                                </div>
+                                <div class="p-col-12 p-pl-0" style="display: flex;">
+                                    <label class="control-label p-col-5 p-pr-2 mobile-card-view-label">Interview Type :</label>
+                                    <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                        {{requirementDetail?.interviewType}}
+                                    </div>
+                                </div>
+                                <div class="p-col-12 p-pl-0" style="display: flex;">
+                                    <label class="control-label p-col-5 p-pr-2 mobile-card-view-label">Status:</label>
+                                    <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                        {{requirementDetail?.status}}
+                                    </div>
+                                </div>
+                                <div class="p-col-12 p-pl-0" style="display: flex;">
+                                    <label class="control-label p-col-5 p-pr-2 mobile-card-view-label">Hot Requirement :</label>
+                                    <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                        {{requirementDetail?.isHotRequirement === true ? 'Yes' : 'No'}}
+                                    </div>
+                                </div>
+                                <div class="p-col-12 p-pl-0" style="display: flex;">
+                                    <label class="control-label p-col-5 p-pr-2 mobile-card-view-label">Public :</label>
+                                    <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                        {{requirementDetail?.isPublic === true ? 'Yes' : 'No'}}
+                                    </div>
+                                </div>
+                                <div class="p-col-12 p-pl-0" style="display: flex;">
+                                    <label class="control-label p-col-5 p-pr-2 mobile-card-view-label">Priority :</label>
+                                    <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                        {{requirementDetail?.priority}}
+                                    </div>
+                                </div>
+                                <div class="p-col-12 p-pl-0" style="display: flex;">
+                                    <label class="control-label p-col-5 p-pr-2 mobile-card-view-label">Assigned To :</label>
+                                    <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                        {{requirementDetail?.assignedToName}}
+                                    </div>
+                                </div>
+                                <div class="p-col-12 p-pl-0" style="display: flex;">
+                                    <label class="control-label p-col-5 p-pr-2 mobile-card-view-label">Reviewer :</label>
+                                    <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                        {{requirementDetail?.reviewer}}
+                                    </div>
+                                </div>
+                                <div class="p-col-12 p-pl-0" style="display: flex;">
+                                    <label class="control-label p-col-5 p-pr-2 mobile-card-view-label">Internal Note :</label>
+                                    <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                    </div>
+                                </div>
+                                <div class="p-col-12 p-pl-0" style="display: flex;">
+                                    <div class="p-col-12 p-pl-0 p-pr-0 mobile-card-view-value">
+                                        {{requirementDetail?.internalNote}}
+                                    </div>
+                                </div>
+                                <div class="p-col-12 p-pl-0" style="display: flex;">
+                                    <label class="control-label p-col-5 p-pr-2 mobile-card-view-label">Job Description :</label>
+
+                                </div>
+                                <div class="p-col-12 p-pl-0" style="display: flex;">
+                                    <div [innerHTML]="requirementDetail?.jobDesc" class="p-md-12 p-pl-0 p-pr-0">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <p-dialog [(visible)]="isCandidateListDisplay" [style]="{width: '1150px'}" [header]=headerTextForCandidateList [modal]="true" styleClass="p-fluid">
+        <div class="card">
+            <p-table #dtCandidate [value]="candidateList" [columns]="cols" selectionMode="single"
+                     [(selection)]="selectedCandidate"
+                     [rows]="10"
+                     dataKey="candidateID"
+                     [metaKeySelection]="true"
+                     [paginator]="false"
+                     [globalFilterFields]="['firstName','lastName','companyName','phone', 'email','workAuthorization','availability','stateName','isRelocation','isActive', 'skills']"
+                     [rowHover]="true"
+                     sortField="firstName" [sortOrder]="1"
+                     styleClass="p-datatable-customers" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)">
+                <ng-template pTemplate="caption">
+                    <div class="p-d-flex p-flex-column p-flex-md-row table-header">
+                        <div class="p-md-3 p-p-0">
+                            <div class=" p-input-icon-left">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text" (input)="dtCandidate.filterGlobal($event.target.value, 'contains')" placeholder="Search..." />
+                            </div>
+                        </div>
+                        <div class="p-md-3 p-pl-5 p-pt-0 p-pb-0 p-pr-0">
+                            <p-dropdown [options]="isPublicList"
+                                        appendTo="body"
+                                        [(ngModel)]="isCandidatePublicID"
+                                        placeholder="Select Public"
+                                        (onChange)="onChangeCandidatePublic($event)"
+                                        optionValue="value"
+                                        optionLabel="label"></p-dropdown>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header" let-columns="columns">
+                    <tr>
+                        <th style="width: 3rem">
+                            <!-- <p-tableHeaderCheckbox></p-tableHeaderCheckbox>-->
+                        </th>
+                        <th pSortableColumn="firstName">First Name <p-sortIcon field="firstName"></p-sortIcon></th>
+                        <th pSortableColumn="lastName">Last Name <p-sortIcon field="lastName"></p-sortIcon></th>
+                        <th pSortableColumn="workAuthorization"> Work Auth <p-sortIcon field="workAuthorization"></p-sortIcon></th>
+                        <th pSortableColumn="jobTitle">Title <p-sortIcon field="jobTitle"></p-sortIcon></th>
+                        <th pSortableColumn="skills">Skills <p-sortIcon field="skills"></p-sortIcon></th>
+                        <th style="width: 30px;" pSortableColumn="billingRate">Rate <p-sortIcon field="billingRate"></p-sortIcon></th>
+                        <th pSortableColumn="experience">Experience <p-sortIcon field="experience"></p-sortIcon></th>
+                        <!--<th pSortableColumn="availability">Availability <p-sortIcon field="availability"></p-sortIcon></th>-->
+                        <th pSortableColumn="stateName">State <p-sortIcon field="stateName"></p-sortIcon></th>
+                        <th pSortableColumn="isRelocation">Relocation<p-sortIcon field="isRelocation"></p-sortIcon></th>
+                    </tr>
+                    <tr>
+                        <th style="width: 3rem">
+                            <!-- <p-tableHeaderCheckbox></p-tableHeaderCheckbox>-->
+                        </th>
+                        <th>
+                            <input type="text" class="p-column-filter" pInputText placeholder="First Name" (input)="dtCandidate.filter($event.target.value,'firstName','contains')">
+
+                            <!--<p-columnFilter type="text" field="firstName" placeholder="Search firstName" display="false"></p-columnFilter>-->
+                        </th>
+                        <th>
+                            <input type="text" class="p-column-filter" pInputText placeholder="Last Name" (input)="dtCandidate.filter($event.target.value,'lastName','contains')">
+                        </th>
+                        <th>
+                            <input type="text" class="p-column-filter" pInputText placeholder="Work Auth" (input)="dtCandidate.filter($event.target.value,'workAuthorization','contains')">
+                        </th>
+                        <th>
+                            <input type="text" class="p-column-filter" pInputText placeholder="Title" (input)="dtCandidate.filter($event.target.value,'jobTitle','contains')">
+                        </th>
+                        <th>
+                            <input type="text" class="p-column-filter" pInputText placeholder="Skills" (input)="dtCandidate.filter($event.target.value,'skills','contains')">
+                        </th>
+                        <th>
+                            <input type="text" class="p-column-filter" pInputText placeholder="Rate" (input)="dtCandidate.filter($event.target.value,'billingRate','contains')">
+                        </th>
+                        <th>
+                            <input type="text" class="p-column-filter" pInputText placeholder="Experience" (input)="dtCandidate.filter($event.target.value,'experience','contains')">
+                        </th>
+                        <th>
+                            <input type="text" class="p-column-filter" pInputText placeholder="State Name" (input)="dtCandidate.filter($event.target.value,'stateName','contains')">
+                        </th>
+                        <th>
+                            <p-columnFilter field="isRelocation" matchMode="equals" [showMenu]="false" [showOperator]="false">
+                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                    <p-dropdown [ngModel]="value" [options]="isAtciveRelocationStatus" (onChange)="filter($event.value)" placeholder="Any" [showClear]="false">
+                                        <ng-template let-option pTemplate="item">
+                                            <span>{{option.label}}</span>
+                                        </ng-template>
+                                    </p-dropdown>
+                                </ng-template>
+                            </p-columnFilter>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-candidate let-columns="columns" let-rowIndex="rowIndex">
+                    <tr [pSelectableRow]="candidate" [pSelectableRowIndex]="rowIndex" [class.ui-state-highlight]="candidate === highlighted">
+                        <td>
+                            <p-tableRadioButton [pSelectableRow]="candidate" [value]="candidate"></p-tableRadioButton>
+                            <!-- <p-tableCheckbox [value]="candidate" (click)="$event.stopPropagation()"></p-tableCheckbox>-->
+                        </td>
+                        <td>
+                            <span class="p-column-title">First Name</span>
+                            {{candidate.firstName}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Last Name</span>
+                            {{candidate.lastName}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Work Auth</span>
+                            {{candidate.workAuthorization}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Title</span>
+                            {{candidate.jobTitle}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Skills</span>
+                            {{candidate.skills}}
+                        </td>
+                        <td style="text-align: center;">
+                            <span class="p-column-title">Billing Rate</span>
+                            {{candidate.billingRate}}
+                        </td>
+
+                        <td>
+                            <span class="p-column-title">Experience</span>
+                            {{candidate.experience !== null ? candidate.experience + ' Years' : ''}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">State</span>
+                            {{candidate.stateName}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Relocation</span>
+                            {{candidate.isRelocation === true ? 'Yes' : 'No'}}
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <div class="p-col-12 p-pt-4" *ngIf="isCandidateReviewQueueForm">
+                <div class="p-pl-2 p-fluid p-formgrid p-grid review-queue">
+                    Review Queue
+                </div>
+                <form [formGroup]="candidateReviewQueueForm">
+                    <fieldset style="border: 1px solid #ced4da !important;">
+                        <div class="p-col-12">
+                            <div class="p-fluid p-formgrid p-grid">
+                                <div class="p-md-6 p-pt-0">
+                                    <label for="firstname6">Rate Type</label>
+                                    <p-dropdown [options]="PayRateTypeListValues" [ngClass]="{ 'is-invalid-dropdown': isCandidateSubmitted && candidateReviewQueueFormControls.RateTypeID.errors }"
+                                                appendTo="body"
+                                                formControlName="RateTypeID"
+                                                placeholder="Select Rate Type"
+                                                optionValue="listValueID"
+                                                optionLabel="value"></p-dropdown>
+                                </div>
+                                <div class="p-md-6 p-pt-0">
+                                    <label for="firstname6">Rate</label>
+                                    <p-inputNumber formControlName="Rate" mode="decimal" [maxlength]="5" inputId="withoutgrouping" placeholder="Rate" [useGrouping]="false" [ngClass]="{ 'is-invalid': isCandidateSubmitted && candidateReviewQueueFormControls.Rate.errors }">
+                                    </p-inputNumber>
+                                </div>
+                                <div class="p-md-12 p-pt-0">
+                                    <label for="firstname6">Note Description</label>
+                                    <textarea rows="5" formControlName="Note" cols="30" pInputTextarea></textarea>
+                                </div>
+                            </div>
+                            <div class="p-col-12" style="padding-right: 0px; display: flex; justify-content: end; padding-top: 1rem;">
+                                <div style="display: flex;">
+                                    <button pButton pRipple type="button" label="Submit" class="p-button-raised p-mr-2 p-mb-2" (click)="submitCandidate()"></button>
+                                    <button pButton pRipple type="button" label="Cancel" class="p-button-raised p-button-danger p-mr-2 p-mb-2" style="margin-right: 0px !important;" (click)="CancelCandidateReview()"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+
+        </div>
+    </p-dialog>
+    <p-toast></p-toast>

@@ -1,0 +1,69 @@
+<div class="p-grid">
+    <div class="p-col-12">
+        <p-dialog [(visible)]="interviewScheduleDialog" [style]="{width: '900px'}" [header]=addEditHeaderText [modal]="true" styleClass="p-fluid">
+            <form [formGroup]="addEditInterviewScheduleForm">
+                <div class="p-col-12">
+                    <div class="p-fluid p-formgrid p-grid mobile-display-block">
+                        <div class="p-md-7 p-pt-0">
+                            <label for="firstname6">Candidate *</label>
+                            <p-autoComplete formControlName="ReviewQueueID" [suggestions]="filteredReviewQueueList" placeholder="Search Candidate" (completeMethod)="filterCountry($event)" appendTo="body"
+                                            field="requirementCandidate" [dropdown]="true" [ngClass]="{ 'is-invalid-dropdown': submitted && addEditInterviewScheduleFormControls.ReviewQueueID.errors }">
+                                <ng-template let-candidate pTemplate="item">
+                                    <div class="candidate-item">
+                                        <div>{{candidate.requirementCandidate}}</div>
+                                    </div>
+                                </ng-template>
+                            </p-autoComplete>
+                        </div>
+                        <div class="p-md-3 p-pt-0">
+                            <label for="firstname6">Interview Date *</label>
+                            <p-calendar formControlName="DateInterview" appendTo="body" [showTime]="true" [showSeconds]="true" inputId="time" [ngClass]="{ 'is-invalid': submitted && addEditInterviewScheduleFormControls.DateInterview.errors }"></p-calendar>
+                        </div>
+                        <div class="p-md-2 p-pt-0">
+                            <label for="firstname6">Duration *</label>
+                            <p-inputNumber formControlName="Duration" mode="decimal" placeholder="Duration" [useGrouping]="false" inputId="mile" suffix=" Minutes" [ngClass]="{ 'is-invalid': submitted && addEditInterviewScheduleFormControls.Duration.errors }">
+                            </p-inputNumber>
+                        </div>
+                        <div class="p-md-4 p-pt-0">
+                            <label for="firstname6">Interview Type *</label>
+                            <p-dropdown [options]="interviewTypeList" [ngClass]="{ 'is-invalid-dropdown': submitted && addEditInterviewScheduleFormControls.InterviewTypeID.errors }"
+                                        appendTo="body"
+                                        formControlName="InterviewTypeID"
+                                        placeholder="Select InterviewType"
+                                        optionValue="listValueID"
+                                        optionLabel="value"></p-dropdown>
+                        </div>
+                        <div class="p-md-4  p-pt-0">
+                            <label for="firstname6">Time Zone *</label>
+                            <p-dropdown [options]="timesoneList"  [ngClass]="{ 'is-invalid-dropdown': submitted && addEditInterviewScheduleFormControls.TimeZone.errors }"
+                                        appendTo="body"
+                                        formControlName="TimeZone"
+                                        placeholder="Select Time Zone"
+                                        optionValue="label"
+                                        optionLabel="value"></p-dropdown>
+                        </div> 
+                        <div class="p-md-4 p-pt-0" [ngClass]="addEditInterviewScheduleForm.value.InterviewScheduleID === 0 ? 'status-disabled' : ''">
+                            <label for="firstname6">Status *</label>
+                            <p-dropdown [options]="reviewStatusList" [ngClass]="{ 'is-invalid-dropdown': submitted && addEditInterviewScheduleFormControls.ReviewStatusID.errors }"
+                                        appendTo="body"
+                                        formControlName="ReviewStatusID"
+                                        placeholder="Select Status"
+                                        optionValue="listValueID"
+                                        optionLabel="value"></p-dropdown>
+                        </div>
+                        <div class="p-md-12 p-pt-0">
+                            <label for="firstname6">Comment</label>
+                            <textarea rows="5" formControlName="Comment" cols="30" pInputTextarea maxlength="500"></textarea>
+                        </div>
+                    </div>
+                    <div class="p-col-12" style="padding-right: 0px; display: flex; justify-content: end; padding-top: 1rem;">
+                        <div style="display: flex;">
+                            <button pButton pRipple type="button" label="Save" class="p-button-raised p-mr-2 p-mb-2" [disabled]="isSaveButtonDisabled"  (click)="saveCandidate()"></button>
+                            <button pButton pRipple type="button" label="Cancel" class="p-button-raised p-button-danger  p-mb-2" style="margin-right: 0px !important; " (click)="Cancel()"></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </p-dialog>
+    </div>
+</div>

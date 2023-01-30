@@ -1,0 +1,248 @@
+<div class="p-grid mobile-display-grid"  *ngIf="rolePermission !== null && rolePermission !== undefined && rolePermission.view === true">
+    <div class="p-col-12 hidden-web">
+        <div class="card">
+            <p-toolbar>
+                <ng-template pTemplate="left">
+                    <div class="p-d-flex p-flex-column p-flex-md-row table-header">
+                        <div class="p-input-icon-left" style="font-size:23px;">
+                            Review Queue
+                        </div>
+                    </div>
+                </ng-template>
+            </p-toolbar>
+            <p-table #dt [value]="reviewQueueList" [columns]="cols" [rows]="10" [paginator]="true"
+                     [globalFilterFields]="['requirement','candidate','rateType','reviewer', 'reviewerStatus','submittedByName']"
+                     [rowHover]="true"
+                      sortField="dateSubmitted" [sortOrder]="-1"
+                     styleClass="p-datatable-customers"
+                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+                <ng-template pTemplate="caption">
+                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between table-header">
+                        <div class="p-md-5 p-p-0">
+                            <div class=" p-input-icon-left">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search..." />
+                            </div>
+                        </div>
+                        <div class="p-md-7 p-p-0 p-d-flex p-flex-column p-flex-md-row p-jc-md-around">
+                            <div>
+                                <label class="p-pr-3" for="firstname6">Reviewer :</label>
+                                <p-multiSelect [options]="reviewQueuesFilterList"
+                                               defaultLabel="Select a Reviewer"
+                                               [(ngModel)]="selectedReviewer"
+                                               (onChange)="onChangeCompany($event)"
+                                               optionValue="reviewerID"
+                                               optionLabel="reviewer"></p-multiSelect>
+                            </div>
+                            <div>
+                                <label class="p-pr-3" for="firstname6">Review Status :</label>
+                                <p-multiSelect [options]="reviewStatusList"
+                                               defaultLabel="Select a Review Status"
+                                               [(ngModel)]="selectedStatus"
+                                               (onChange)="onChangeStatus($event)"
+                                               optionValue="listValueID"
+                                               optionLabel="value"></p-multiSelect>
+                            </div>
+                            <!--<div>
+                                <button pButton pRipple label="Add" style="margin: 0px !important;" icon="pi pi-plus" class="p-button-primary p-mr-2 p-mb-2" (click)="addreviewQueue()"></button>
+                            </div>-->
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="requirement">Requirement <p-sortIcon field="requirement"></p-sortIcon></th>
+                        <th pSortableColumn="candidate">Candidate <p-sortIcon field="candidate"></p-sortIcon></th>
+                        <th pSortableColumn="workAuth">WorkAuth<p-sortIcon field="workAuth"></p-sortIcon></th>
+                        <th pSortableColumn="rateType"> Rate Type <p-sortIcon field="rateType"></p-sortIcon></th>
+                        <th pSortableColumn="rate"> Rate <p-sortIcon field="rate"></p-sortIcon></th>
+                        <th pSortableColumn="submittedByName">Submitted By<p-sortIcon field="submittedByName"></p-sortIcon></th>
+                        <th pSortableColumn="dateSubmitted">Submitted Date<p-sortIcon field="dateSubmitted"></p-sortIcon></th>
+                        <th pSortableColumn="reviewer">Reviewer <p-sortIcon field="reviewer"></p-sortIcon></th>
+                        <!--<th pSortableColumn="workAuthorization">Authorization <p-sortIcon field="workAuthorization"></p-sortIcon></th>-->
+                        <th pSortableColumn="reviewStatus">Review Status <p-sortIcon field="reviewStatus"></p-sortIcon></th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-reviewQueue>
+                    <tr>
+                        <td style="cursor: pointer; color: #2399e5;" (click)="viewRequirement(reviewQueue)">
+                            <span class="p-column-title">Requirement</span>
+                            {{reviewQueue.requirement}}
+                        </td>
+                        <td style="white-space: nowrap;">
+                            <span class="p-column-title">Candidate</span>
+                            {{reviewQueue.candidate}}
+                        </td>
+                        <td style="white-space: nowrap;">
+                            <span class="p-column-title">WorkAuth</span>
+                            {{reviewQueue.workAuth}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">RateType</span>
+                            {{reviewQueue.rateType}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Rate</span>
+                            {{reviewQueue.rate}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">SubmittedBy</span>
+                            {{reviewQueue.submittedByName}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">SubmittedDate</span>
+                            {{reviewQueue.dateSubmitted | date: 'dd/MM/yyyy'}}
+                        </td>
+                        <td style="white-space: nowrap;">
+                            <span class="p-column-title">Reviewer</span>
+                            {{reviewQueue.reviewer}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">ReviewStatus</span>
+                            {{reviewQueue.reviewStatus}}
+                        </td>
+                        <td>
+                            <div style="display: flex;">
+                                <div [ngClass]="{'display-none': isUpdateRolePermission}" style="display: contents;">
+                                    <button [disabled]="(((userDetails.roleShort === roleShortConstants.ADMIN || userDetails.roleShort === roleShortConstants.REVIEWER) &&  companyID !== 0 && reviewQueue.companyID === companyID) || (reviewQueue.reviewStatus.toUpperCase() === reviewStatusConstants.REQUESTED &&  companyID !== 0 && reviewQueue.candidateCompanyID === companyID)) ? false : true" pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-primary p-mr-2" (click)="editreviewQueue(reviewQueue)"></button>
+                                </div>
+                                    <p-button class="p-button-rounded p-button-primary p-mr-2 notes-icons" icon="fa fa-commenting-o" (click)="openNotesList(reviewQueue)"></p-button>
+                                    <p-button class="p-button-rounded p-button-primary p-mr-2 notes-icons" [disabled]="reviewQueue.reviewStatus.toUpperCase() !== reviewStatusConstants.REQUESTED ? false : true" icon="fa fa-file-text-o" (click)="openResume(reviewQueue)"></p-button>
+                                    <button [disabled]="reviewQueue.reviewStatus.toUpperCase() === reviewStatusConstants.SUBMITTED ? false : true" pButton pRipple icon="pi pi-microsoft" class="p-button-rounded p-button-primary p-mr-0" (click)="addInterviewShcedule(reviewQueue)"></button>
+                                </div>
+</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    <div class="p-d-flex p-ai-center p-jc-between">
+                        In total there are {{reviewQueueList ? reviewQueueList.length : 0 }} candidates in Review Queue.
+                    </div>
+                </ng-template>
+            </p-table>
+        </div>
+
+    </div>
+    <!--// mobile design start-->
+    <div class="hidden-web hidden-mobile">
+        <div class="p-input-icon-left" style="font-size: 23px; padding-bottom: 1rem;">
+            Review Queues
+        </div>
+        <div class="p-d-flex mobile-display-block " style="justify-content:space-between; padding-bottom:1rem;">
+            <div class="p-md-6 p-p-0 p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                <div class=" p-input-icon-left mobile-display-grid">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" id="myFilter" (input)="applyFilterGlobal()" placeholder="Search..." />
+                </div>
+            </div>
+            <div class="p-md-6 p-p-0 p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                <div style="padding-top:10px;">
+                    <label class="p-pr-3 mobile-card-view-label" style="display: block !important;" for="firstname6">Reviewer :</label>
+                    <p-multiSelect [options]="reviewQueuesFilterList"
+                                   defaultLabel="Select a Reviewer"
+                                   [(ngModel)]="selectedReviewer"
+                                   (onChange)="onChangeCompany($event)"
+                                   optionValue="reviewerID"
+                                   optionLabel="reviewer"></p-multiSelect>
+                </div>
+                <div style="padding-top:10px;">
+                    <label class="p-pr-3 mobile-card-view-label" style="display: block !important;" for="firstname6">Review Status :</label>
+                    <p-multiSelect [options]="reviewStatusList"
+                                   defaultLabel="Select a Review Status"
+                                   [(ngModel)]="selectedStatus"
+                                   (onChange)="onChangeStatus($event)"
+                                   optionValue="listValueID"
+                                   optionLabel="value"></p-multiSelect>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="reviewQueueList !== undefined && reviewQueueList.length > 0" id="myItems">
+            <div class="card mobile-card-view " style="padding-bottom: 0.5rem; margin-bottom: 1rem;" *ngFor="let reviewQueue of reviewQueueList">
+                <div class="card-body" style="padding-bottom:0.5rem !important;">
+                    <div class="p-fluid p-formgrid p-grid ">
+                        <div class="p-col-12 p-pl-0" style="display: flex; justify-content: end;" *ngIf="userDetails.roleShort === roleShortConstants.ADMIN || userDetails.roleShort === roleShortConstants.REVIEWER">
+                            <p-menu #popupMenu [popup]="true" [model]="items"></p-menu>
+                            <button pButton type="button" (click)="toggleMenu(popupMenu, $event, reviewQueue)" style="position: absolute; background: white;" icon="pi pi-ellipsis-v" class="p-button-rounded p-button-plain p-button-text"></button>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Requirement :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{reviewQueue?.requirement}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Candidate :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{reviewQueue?.candidate}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Rate Type:</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{reviewQueue?.rateType}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Rate :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{reviewQueue?.rate}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Submitted By :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{reviewQueue?.submittedByName}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Submitted Date :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{reviewQueue?.dateSubmitted | date: 'dd/MM/yyyy'}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Reviewer :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{reviewQueue?.reviewer}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Review Status :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{reviewQueue?.reviewStatus}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="p-grid mobile-display-block" style="text-align:center;" *ngIf="reviewQueueList !== undefined && reviewQueueList.length === 0">
+            No Reviews Queue
+            </div>
+        </div>
+        <div>
+            <!--<app-add-edit-requirement #addEditRequirment (loadRequimentDetails)="loadRequirmentList()"></app-add-edit-requirement>-->
+            <app-add-edit-interview-schedule #addEditInterviewSchedule (loadReviewQueueDetails)="loadReviewQueueList()"></app-add-edit-interview-schedule>
+            <app-add-edit-review-queue #addEditReviewQueue (loadReviewQueueDetails)="loadReviewQueueList()"></app-add-edit-review-queue>
+        </div>
+    </div>
+<div class="dashboard p-grid p-fluid" *ngIf="rolePermission !== null && rolePermission !== undefined && rolePermission.view === false">
+    No View Access for Review Queue
+</div>
+<div class="p-grid mobile-display-block">
+    <div class="p-col-12">
+        <p-dialog [(visible)]="notesDialog" [style]="{width: '900px'}" [header]=addEditHeaderText [modal]="true" styleClass="p-fluid">
+            <div class="p-col-12">
+                <div class="p-fluid p-formgrid ">
+                    <div class="p-grid p-pb-2 p-pt-2 mobile-display-block">
+                        <div class="p-md-12 p-pt-2" *ngIf="noteList.length > 0">
+                            <app-note [data]="noteList"></app-note>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+        </p-dialog>
+</div>
+</div>
+<p-toast></p-toast>

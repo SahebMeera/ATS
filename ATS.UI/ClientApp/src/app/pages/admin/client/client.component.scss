@@ -1,0 +1,25 @@
+:host ::ng-deep .p-paginator {
+    display: flex;
+    align-items: center;
+    justify-content: end !important;
+    flex-wrap: wrap;
+}
+
+.invalid-feedback {
+    color: #E91E63;
+    display: block;
+}
+
+.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+}
+@media screen and (max-width: 769px) {
+    .mobile-display-block {
+        display: block !important;
+    }
+
+    .mobile-display-grid {
+        display: grid !important;
+    }
+}

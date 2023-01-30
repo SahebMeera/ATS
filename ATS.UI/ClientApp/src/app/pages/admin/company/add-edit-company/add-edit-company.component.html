@@ -1,0 +1,64 @@
+<div class="p-grid">
+    <div class="p-col-12">
+        <p-dialog [(visible)]="companyDialog" [style]="{width: '900px'}" [header]=addEditHeaderText [modal]="true" styleClass="p-fluid" [closable]="true" (onHide)="close()">
+            <form [formGroup]="addEditCompanyForm">
+                <div class="p-col-12">
+                    <div class="p-fluid p-formgrid p-grid mobile-display-block">
+                        <div class="p-md-4  p-pt-0">
+                            <label for="firstname6">Company Name*</label>
+                            <input type="text" pInputText formControlName="CompanyName" placeholder="Company Name" [ngClass]="{ 'is-invalid': submitted && addEditCompanyControls.CompanyName.errors }">
+
+                        </div>
+                        <div class="p-md-4 p-pt-0">
+                            <label for="firstname6">Company URL *</label>
+                            <input type="text" pInputText formControlName="CompanyURL" placeholder="Company URL" [ngClass]="{ 'is-invalid': submitted && addEditCompanyControls.CompanyURL.errors }">
+                        </div>
+                        <div class="p-md-4 p-pt-0">
+                            <label for="firstname6">Phone</label>
+                            <p-inputMask mask="(999) 999-9999" formControlName="Phone" placeholder="Phone"></p-inputMask>
+                        </div>
+                        <div class="p-md-4 p-pt-0">
+                            <label for="firstname6">City *</label>
+                            <input type="text" formControlName="City" pInputText placeholder="City" maxlength="50" [ngClass]="{ 'is-invalid': submitted && addEditCompanyControls.City.errors }" />
+                        </div>
+                        <div class="p-md-4 p-pt-0">
+                            <label for="firstname6">State *</label>
+                            <p-dropdown [options]="stateList" [ngClass]="{ 'is-invalid-dropdown': submitted && addEditCompanyControls.StateID.errors }"
+                                        appendTo="body"
+                                        formControlName="StateID"
+                                        placeholder="Select State"
+                                        optionValue="stateID"
+                                        optionLabel="stateName"></p-dropdown>
+                        </div>
+                        <div class="p-md-4 p-pt-0">
+                            <label for="firstname6">Country *</label>
+                            <p-dropdown [options]="countryList" [ngClass]="{ 'is-invalid-dropdown': submitted && addEditCompanyControls.CountryID.errors }"
+                                        appendTo="body"
+                                        formControlName="CountryID"
+                                        placeholder="Select Country"
+                                        optionValue="countryID"
+                                        optionLabel="countryName"></p-dropdown>
+                        </div>
+                        <div class="p-md-4 p-pt-0">
+                            <label for="firstname6">ZIP Code *</label>
+                            <p-inputNumber formControlName="ZIPCode" mode="decimal" [maxlength]="5" inputId="withoutgrouping" placeholder="Zip Code" [useGrouping]="false" [ngClass]="{ 'is-invalid': submitted && addEditCompanyControls.ZIPCode.errors }">
+                            </p-inputNumber>
+                        </div>
+                        <div class="p-md-4 removed-padding" style="display: flex; justify-content: flex-start; align-items: center; padding-top:20px;">
+                            <div class="field-checkbox">
+                                <p-checkbox formControlName="IsActive" binary="true" inputId="binary"></p-checkbox>
+                                <label for="binary" style="padding-left: 5px;">Is Active</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-col-12" style="padding-right: 0px; display: flex; justify-content: end; padding-top: 1rem;">
+                        <div style="display: flex;">
+                            <button pButton pRipple type="button" label="Save" class="p-button-raised p-mr-2 p-mb-2" [disabled]="isSaveButtonDisabled" (click)="saveCompany()"></button>
+                            <button pButton pRipple type="button" label="Cancel" class="p-button-raised p-button-danger  p-mb-2" style="margin-right: 0px !important; " (click)="Cancel()"></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </p-dialog>
+    </div>
+</div>

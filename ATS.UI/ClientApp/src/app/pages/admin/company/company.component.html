@@ -1,0 +1,182 @@
+<div class="p-grid mobile-display-grid" *ngIf="rolePermission !== null && rolePermission !== undefined && rolePermission.view === true">
+    <div class="p-col-12 hidden-web">
+        <div class="card">
+            <p-toolbar>
+                <ng-template pTemplate="left">
+                    <div class="p-d-flex p-flex-column p-flex-md-row table-header">
+                        <div class="p-input-icon-left" style="font-size:23px;">
+                            Company
+                        </div>
+                    </div>
+                </ng-template>
+            </p-toolbar>
+            <p-table #dt [value]="companyList" [columns]="cols" [rows]="10" [paginator]="true"
+                     [globalFilterFields]="['companyName','companyURL','phone','city', 'countryName', 'stateName']"
+                     [rowHover]="true"
+                     sortField="companyName" [sortOrder]="1"
+                     styleClass="p-datatable-customers"
+                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+                <ng-template pTemplate="caption">
+                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between table-header">
+                        <div class="p-md-6 p-p-0 p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                            <div class=" p-input-icon-left">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search..." />
+                            </div>
+                        </div>
+                        <div class="p-md-6 p-p-0 p-d-flex p-flex-column p-flex-md-row p-jc-md-end" [ngClass]="userDetails.roleShort === 'SUPERADMIN' ? 'p-jc-md-end' : 'p-jc-md-end'">
+                            <div [ngClass]="{'display-none': isAddRolePermission}">
+                                <button pButton pRipple label="Add" style="margin: 0px !important;" icon="pi pi-plus" class="p-button-primary p-mr-2 p-mb-2" (click)="addCompany()"></button>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="companyName">Company Name<p-sortIcon field="companyName"></p-sortIcon></th>
+                        <th pSortableColumn="companyURL">Company URL<p-sortIcon field="companyURL"></p-sortIcon></th>
+                        <th pSortableColumn="phone">Phone<p-sortIcon field="phone"></p-sortIcon></th>
+                        <th pSortableColumn="city">City<p-sortIcon field="city"></p-sortIcon></th>
+                        <th pSortableColumn="stateName">State<p-sortIcon field="stateName"></p-sortIcon></th>
+                        <th pSortableColumn="countryName">Country<p-sortIcon field="countryName"></p-sortIcon></th>
+                        <th pSortableColumn="isAcitve">Is Active<p-sortIcon field="isAcitve"></p-sortIcon></th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-company>
+                    <tr>
+                        <td>
+                            <span class="p-column-title">Company Name</span>
+                            {{company.companyName}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Company URL</span>
+                            {{company.companyURL}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Phone</span>
+                            {{company.phone}}
+
+                        </td>
+                        <td>
+                            <span class="p-column-title">City</span>
+                            {{company.city}}
+
+                        </td>
+                        <td>
+                            <span class="p-column-title">State</span>
+                            {{company.stateName}}    
+                        </td>
+                        <td>
+                            <span class="p-column-title">Country</span>
+                            {{company.countryName}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">IsActive</span>
+                            {{company.isActive === true ? 'Yes' : 'No'}}
+                        </td>
+                        <td [ngClass]="{'display-none': isUpdateRolePermission}">
+                            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-primary p-mr-2" (click)="editCompany(company)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    <div class="p-d-flex p-ai-center p-jc-between">
+                        In total there are {{companyList ? companyList.length : 0 }} companys.
+                    </div>
+                </ng-template>
+            </p-table>
+        </div>
+
+    </div>
+    <div>
+       <app-add-edit-company #addEditCompany (loadCompanyDetails)="loadCompanys()"></app-add-edit-company>
+    </div>
+    <!--// mobile design start-->
+    <div class="hidden-web hidden-mobile">
+        <div class="p-input-icon-left" style="font-size: 23px; padding-bottom: 1rem;">
+            Clients
+        </div>
+        <div class="p-d-flex mobile-display-block " style="justify-content:space-between; padding-bottom:1rem;">
+            <div class="p-md-6 p-p-0 p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                <div class=" p-input-icon-left mobile-display-grid">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" id="myFilter" (input)="applyFilterGlobal()" placeholder="Search..." />
+                </div>
+            </div>
+            <div class="p-md-6 p-p-0 p-d-flex p-flex-column p-flex-md-row" [ngClass]="userDetails.roleShort === 'SUPERADMIN' ? 'p-jc-md-between' : 'p-jc-md-end'">
+                <div style="padding-top:10px;"  [ngClass]="{'display-none': isAddRolePermission}">
+                    <button pButton pRipple label="Add" style="margin: 0px !important;" icon="pi pi-plus" class="p-button-primary p-mr-2 p-mb-2" (click)="addCompany()"></button>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="companyList !== null && companyList !== undefined && companyList.length > 0" id="myItems">
+            <div class="card mobile-card-view " style="padding-bottom: 0.5rem; margin-bottom: 1rem;" *ngFor="let company of companyList" (click)="editCompany(company)">
+                <div class="card-body" style="padding-bottom:0.5rem !important;">
+                    <div class="p-fluid p-formgrid p-grid">
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label"> Name :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{company?.companyName}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Company URL :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{company?.companyURL}}
+                            </div>
+                        </div>
+
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">
+                                Phone :
+                            </label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{company?.phone}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">
+                                City :
+                            </label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{company?.city}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">
+                                State :
+                            </label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{company?.stateName}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">
+                                Country :
+                            </label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{company?.countryName}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">
+                                Is Active :
+                            </label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{company.isActive === true ? 'Yes' : 'No'}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="companyList !== null && companyList !== undefined && companyList.length === 0" style="text-align: center;">
+            No Clients
+        </div>
+    </div>
+    </div>
+<div class="dashboard p-grid p-fluid" *ngIf="rolePermission !== null && rolePermission !== undefined && rolePermission.view === false">
+    No View Access for Company
+</div>
+    <p-toast></p-toast>

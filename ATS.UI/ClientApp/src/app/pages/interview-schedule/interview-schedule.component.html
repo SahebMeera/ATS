@@ -1,0 +1,212 @@
+<div class="p-grid mobile-display-grid" *ngIf="rolePermission !== null && rolePermission !== undefined && rolePermission.view === true">
+    <div class="p-col-12 hidden-web">
+        <div class="card">
+            <p-toolbar>
+                <ng-template pTemplate="left">
+                    <div class="p-d-flex p-flex-column p-flex-md-row table-header">
+                        <div class="p-input-icon-left" style="font-size:23px;">
+                            Interview Schedule
+                        </div>
+                    </div>
+                </ng-template>
+            </p-toolbar>
+            <p-table #dt [value]="interviewScheduleList" [columns]="cols" [rows]="10" [paginator]="true"
+                     [globalFilterFields]="['reviewer','duration','interviewType','timeZone', 'comment']"
+                     [rowHover]="true"
+                     sortField="dateInterview" [sortOrder]="-1"
+                     styleClass="p-datatable-customers"
+                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+                <ng-template pTemplate="caption">
+                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between table-header">
+                        <div class="p-md-6 p-p-0 p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                            <div class=" p-input-icon-left">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search..." />
+                            </div>
+                        </div>
+                        <div class="p-md-6 p-p-0 p-d-flex p-flex-column p-flex-md-row p-jc-md-end" [ngClass]="userDetails.roleShort === 'SUPERADMIN' ? 'p-jc-md-end' : 'p-jc-md-end'">
+                            <div [ngClass]="{'display-none': isAddRolePermission}">
+                                <button pButton pRipple label="Add" style="margin: 0px !important;" icon="pi pi-plus" class="p-button-primary p-mr-2 p-mb-2" (click)="addInterviewSchedule()"></button>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="candidate">Candidate<p-sortIcon field="candidate"></p-sortIcon></th>
+                        <th pSortableColumn="requirement">Requirement<p-sortIcon field="requirement"></p-sortIcon></th>
+                        <th pSortableColumn="recruiter">Recruiter<p-sortIcon field="recruiter"></p-sortIcon></th>
+                        <th pSortableColumn="dateInterview">Interview Time <p-sortIcon field="dateInterview"></p-sortIcon></th>
+                        <th pSortableColumn="duration"> Duration <p-sortIcon field="duration"></p-sortIcon></th>
+                        <th pSortableColumn="timeZone">Time Zone<p-sortIcon field="timeZone"></p-sortIcon></th>
+                        <th pSortableColumn="interviewType">Type <p-sortIcon field="interviewType"></p-sortIcon></th>
+                        <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
+                        <!--th pSortableColumn="comment">Comment <p-sortIcon field="comment"></p-sortIcon></th>
+                        <!-- <th pSortableColumn="reviewer">Reviewer<p-sortIcon field="reviewer"></p-sortIcon></th>-->
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-interviewSchedule>
+                    <tr>
+                        <td>
+                            <span class="p-column-title">Candidate</span>
+                            {{interviewSchedule.candidate}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Requirement</span>
+                            {{interviewSchedule.requirement}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Recruiter</span>
+                            {{interviewSchedule.recruiter}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Interview Date</span>
+                            {{commonUtils.formatDateWithAmPM(interviewSchedule.dateInterview)}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Duration</span>
+                            {{interviewSchedule.duration + ' Minutes'}}
+                        </td>
+                        <td style="text-align: center;">
+                            <span class="p-column-title">TimeZone</span>
+                            {{interviewSchedule.timeZone}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Interview Type</span>
+                            {{interviewSchedule.interviewType}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Status</span>
+                            {{interviewSchedule.status}}
+                        </td>
+                        <!--<td>
+                            <span class="p-column-title">Comment</span>
+                            {{interviewSchedule.comment}}
+                        </td>-->
+                        <!--<td>
+                            <span class="p-column-title">Reviewer</span>
+                            {{interviewSchedule.reviewer}}
+                        </td>-->
+                    <td style="width:53px;">
+                        <div [ngClass]="{'display-none': isUpdateRolePermission}" style="display: contents;">
+                            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-primary p-mr-2" (click)="editInterviewSchedule(interviewSchedule)"></button>
+                        </div>
+                        <p-button class="p-button-rounded p-button-primary p-mr-2 notes-icons" icon="fa fa-commenting-o" (click)="openNotesList(interviewSchedule)"></p-button>
+                    </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    <div class="p-d-flex p-ai-center p-jc-between">
+                        In total there are {{interviewScheduleList ? interviewScheduleList.length : 0 }} interview schedules.
+                    </div>
+                </ng-template>
+            </p-table>
+        </div>
+
+    </div>
+    <div>
+        <app-add-edit-interview-schedule #addEditInterviewSchedule (loadInterviewScheduleDetails)="loadinterviewSchedule()"></app-add-edit-interview-schedule>
+    </div>
+    <!--// mobile design start-->
+    <div class="hidden-web hidden-mobile">
+        <div class="p-input-icon-left" style="font-size: 23px; padding-bottom: 1rem;">
+            Interview Schedule
+        </div>
+        <div class="p-d-flex mobile-display-block " style="justify-content:space-between; padding-bottom:1rem;">
+            <div class="p-md-6 p-p-0 p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                <div class=" p-input-icon-left mobile-display-grid">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" id="myFilter" (input)="applyFilterGlobal()" placeholder="Search..." />
+                </div>
+            </div>
+            <div class="p-md-6 p-p-0 p-d-flex p-flex-column p-flex-md-row" [ngClass]="userDetails.roleShort === 'SUPERADMIN' ? 'p-jc-md-between' : 'p-jc-md-end'">
+                <div style="padding-top:10px;" [ngClass]="{'display-none': isAddRolePermission}">
+                    <button pButton pRipple label="Add" style="margin: 0px !important;" icon="pi pi-plus" class="p-button-primary p-mr-2 p-mb-2" (click)="addInterviewSchedule()"></button>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="interviewScheduleList !== null && interviewScheduleList !== undefined && interviewScheduleList.length > 0" id="myItems">
+            <div class="card mobile-card-view " style="padding-bottom: 0.5rem; margin-bottom: 1rem;" *ngFor="let interviewSchedule of interviewScheduleList" (click)="editInterviewSchedule(interviewSchedule)">
+                <div class="card-body" style="padding-bottom:0.5rem !important;">
+                    <div class="p-fluid p-formgrid p-grid">
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Candidate :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{interviewSchedule?.candidate}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Requirement :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{interviewSchedule?.requirement}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Recruiter :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{interviewSchedule?.recruiter}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Interivew Time :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{commonUtils.formatDateWithAmPM(interviewSchedule?.dateInterview)}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Duration :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{interviewSchedule?.duration + ' Minutes'}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Time Zone :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{interviewSchedule?.timeZone}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Type :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{interviewSchedule?.interviewType}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Status :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{interviewSchedule?.status}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Comment :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{interviewSchedule?.comment}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="dashboard p-grid p-fluid" *ngIf="rolePermission !== null && rolePermission !== undefined && rolePermission.view === false">
+    No View Access for Interview Schedule
+</div>
+<div class="p-grid mobile-display-block">
+    <div class="p-col-12">
+        <p-dialog [(visible)]="notesDialog" [style]="{width: '900px'}" [header]=addEditHeaderText [modal]="true" styleClass="p-fluid">
+            <div class="p-col-12">
+                <div class="p-fluid p-formgrid ">
+                    <div class="p-grid p-pb-2 p-pt-2 mobile-display-block">
+                        <div class="p-md-12 p-pt-2" *ngIf="noteList.length > 0">
+                            <app-note [data]="noteList"></app-note>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </p-dialog>
+    </div>
+</div>
+<p-toast></p-toast>

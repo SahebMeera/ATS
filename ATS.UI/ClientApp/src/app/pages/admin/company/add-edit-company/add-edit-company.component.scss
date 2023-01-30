@@ -1,0 +1,28 @@
+.invalid-feedback {
+    color: #E91E63;
+    display: block;
+}
+
+.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+:host::ng-deep .p-autocomplete-dd .p-autocomplete-dropdown {
+    border: 1px solid #ced4da;
+}
+
+.status-disabled {
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+:host ::ng-deep .is-invalid-dropdown {
+    .p-dropdown {
+        outline: 1px solid #E91E63;
+    }
+
+    .p-autocomplete {
+        outline: 1px solid #E91E63;
+    }
+}

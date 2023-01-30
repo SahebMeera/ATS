@@ -1,0 +1,30 @@
+#resp-table {
+    width: 100%;
+    display: table;
+}
+
+#resp-table-body {
+    display: table-row-group;
+}
+
+.resp-table-row {
+    display: table-row;
+}
+
+.table-body-cell {
+    display: table-cell;
+    border: 1px solid #dddddd;
+    padding: 4px;
+    line-height: 1;
+    vertical-align: middle;
+}
+.font-weight {
+    font-weight:600;
+}
+.fixed-width {
+    min-width: 13rem !important;
+    width: 14rem !important;
+}
+:host::ng-deep.p-dropdown .p-dropdown-label {
+    padding-left: 5px;
+}

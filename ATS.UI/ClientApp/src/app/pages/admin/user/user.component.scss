@@ -1,0 +1,58 @@
+:host ::ng-deep .p-paginator {
+    display: flex;
+    align-items: center;
+    justify-content: end !important;
+    flex-wrap: wrap;
+}
+.invalid-feedback {
+    color: #E91E63;
+    display: block;
+}
+.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+}
+.mobile-card-view {
+    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%);
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+
+.mobile-card-view-label {
+    display: flex;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    color: var(--dark-grey-blue);
+    white-space: nowrap;
+    justify-content: flex-end;
+}
+
+.mobile-card-view-value {
+    letter-spacing: -0.3px;
+}
+
+.leave-request-mobile-rowactions {
+    position: absolute;
+    right: 10px;
+    bottom: -13px;
+    transform: translate(0, -23px);
+}
+
+@media screen and (max-width: 769px) {
+     .mobile-display-block {
+         display: block !important;
+     }
+    .mobile-display-grid {
+        display: grid !important;
+    }
+}
+:host ::ng-deep .is-invalid-dropdown {
+    .p-dropdown {
+        outline: 1px solid #E91E63;
+    }
+}
+
+

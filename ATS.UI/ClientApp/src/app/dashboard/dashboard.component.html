@@ -1,0 +1,145 @@
+<div class="dashboard p-grid p-fluid" *ngIf="dashboardRolePermission !== null && dashboardRolePermission !== undefined && dashboardRolePermission.view === true">
+    <div class="p-col-12 p-md-3">
+        <div class="card summary p-d-flex p-jc-between" *ngIf="isUserNavigate" style="cursor: pointer;" (click)="redirectToUser()">
+            <div>
+                <span class="title" >Users</span>
+                <span class="detail">Number of users</span>
+            </div>
+            <div class="p-d-flex p-ai-center">
+                <span class="count visitors p-p-2">{{dashboard?.userCount}}</span>
+            </div>
+        </div>
+        <div class="card summary p-d-flex p-jc-between" *ngIf="!isUserNavigate">>
+            <div>
+                <span class="title" >Users</span>
+                <span class="detail">Number of users</span>
+            </div>
+            <div class="p-d-flex p-ai-center">
+                <span class="count visitors p-p-2">{{dashboard?.userCount}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="p-col-12 p-md-3">
+        <div class="card summary p-d-flex p-jc-between" style=" cursor: pointer;" (click)="redirectToCandidate()">
+            <div>
+                <span class="title" >Candidates</span>
+                <span class="detail">Number of candidates</span>
+            </div>
+            <div class="p-d-flex p-ai-center">
+                <span class="count purchases p-p-2">{{dashboard?.candidateCount}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="p-col-12 p-md-3">
+        <div class="card summary p-d-flex p-jc-between"  style=" cursor: pointer;" (click)="redirectToReviewQueue()">
+            <div>
+                <span class="title">Resume Requests</span>
+                <span class="detail">Open resume requests</span>
+            </div>
+            <div class="p-d-flex p-ai-center">
+                <span class="count revenue p-p-2">{{dashboard?.resumeRequests}}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="p-col-12 p-md-3">
+        <div class="card summary p-d-flex p-jc-between" style=" cursor: pointer;" (click)="redirectToRequirement()">
+            <div>
+                <span class="title" >Open Requirements</span>
+                <span class="detail">Open requirements</span>
+            </div>
+            <div class="p-d-flex p-ai-center">
+                <span class="count revenue p-p-2">{{dashboard?.openRequirements}}</span>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- <div class="p-col-12 p-md-6 p-lg-3">
+        <div class="card overview-box paypal">
+            <div class="p-d-flex p-jc-between">
+                <i class="logo pi pi-paypal p-mb-3"></i>
+                <button pButton type="button" id="paypal-button"  icon="pi pi-ellipsis-v" class="p-button-rounded p-button-plain p-button-text"></button>
+            </div>
+            <h5 class="p-mb-3">PayPal</h5>
+            <p class="p-mb-1"><strong>$421</strong> / $1212</p>
+            <p-progressBar value="35" [showValue]="false"></p-progressBar>
+        </div>
+    </div>
+
+    <div class="p-col-12 p-md-6 p-lg-3">
+        <div class="card overview-box amazon">
+            <div class="p-d-flex p-jc-between">
+                <i class="logo pi pi-amazon p-mb-3"></i>
+                <button pButton type="button" id="amazon-button"  icon="pi pi-ellipsis-v" class="p-button-rounded p-button-plain p-button-text"></button>
+            </div>
+            <h5 class="p-mb-3">Amazon</h5>
+            <p class="p-mb-1"><strong>$6752</strong> / $9550</p>
+            <p-progressBar value="70" [showValue]="false"></p-progressBar>
+        </div>
+    </div>
+
+    <div class="p-col-12 p-md-6 p-lg-3">
+        <div class="card overview-box youtube">
+            <div class="p-d-flex p-jc-between">
+                <i class="logo pi pi-youtube p-mb-3"></i>
+                <button pButton type="button" id="youtube-button"  icon="pi pi-ellipsis-v" class="p-button-rounded p-button-plain p-button-text"></button>
+            </div>
+            <h5 class="p-mb-3">YouTube</h5>
+            <p class="p-mb-1"><strong>$1132</strong> / $6987</p>
+            <p-progressBar value="13" [showValue]="false"></p-progressBar>
+        </div>
+    </div>
+
+    <div class="p-col-12 p-md-6 p-lg-3">
+        <div class="card overview-box apple">
+            <div class="p-d-flex p-jc-between">
+                <i class="logo pi pi-apple p-mb-3"></i>
+                <button pButton type="button" id="apple-button"  icon="pi pi-ellipsis-v" class="p-button-rounded p-button-plain p-button-text"></button>
+            </div>
+            <h5 class="p-mb-3">Apple</h5>
+            <p class="p-mb-1"><strong>$58990</strong> / $65650</p>
+            <p-progressBar value="90" [showValue]="false"></p-progressBar>
+        </div>
+    </div> -->
+
+    <div class="p-col-12 p-md-6 p-lg-4" *ngIf="false">
+        <p-panel header="Tasks" [style]="{'height':'100%'}">
+            <ul class="task-list">
+                <li>
+                    <p-checkbox binary="true"></p-checkbox>
+                    <span class="task-name">Sales reports</span>
+                    <button type="button" pButton icon="pi pi-check"></button>
+                </li>
+                <li>
+                    <p-checkbox binary="true"></p-checkbox>
+                    <span class="task-name">Pay the invoices</span>
+                    <button type="button" pButton icon="pi pi-check"></button>
+                </li>
+                <li>
+                    <p-checkbox binary="true"></p-checkbox>
+                    <span class="task-name">Dinner with Tony</span>
+                    <button type="button" pButton icon="pi pi-check"></button>
+                </li>
+                <li>
+                    <p-checkbox binary="true"></p-checkbox>
+                    <span class="task-name">Team meeting</span>
+                    <button type="button" pButton icon="pi pi-check"></button>
+                </li>
+                <li>
+                    <p-checkbox binary="true"></p-checkbox>
+                    <span class="task-name">Plan the new theme</span>
+                    <button type="button" pButton icon="pi pi-check"></button>
+                </li>
+                <li>
+                    <p-checkbox binary="true"></p-checkbox>
+                    <span class="task-name">Client meeting</span>
+                    <button type="button" pButton icon="pi pi-check"></button>
+                </li>
+            </ul>
+        </p-panel>
+    </div>
+</div>
+<div class="dashboard p-grid p-fluid" *ngIf="dashboardRolePermission !== null && dashboardRolePermission !== undefined && dashboardRolePermission.view === false">
+   Dashboard No Role Permission access
+</div>

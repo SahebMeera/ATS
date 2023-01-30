@@ -1,0 +1,68 @@
+<div class="p-grid">
+    <div class="p-col-12">
+        <p-dialog [(visible)]="reviewQueueDialog" [style]="{width: '900px'}" [header]=addEditHeaderText [modal]="true" styleClass="p-fluid">
+            <form [formGroup]="addEditReviewQueueForm" style="margin-top:10px;">
+                <div class="p-col-12">
+                    <div class="p-fluid p-formgrid ">
+                        <div class="p-grid p-pb-3 mobile-display-block">
+                            <div class="p-md-3 p-pt-0">
+                                <label for="firstname6">Reviewer {{isReviewerRequired === true ? '*' : ''}}</label>
+                                <p-dropdown [options]="reviewerList" [ngClass]="[isReviewerIDRequired === true ? 'required-border' : '',  isReviewerDisabled === true ? 'disabled' : '' ]"
+                                            appendTo="body"
+                                            formControlName="ReviewerID"
+                                            placeholder="Select Reviewer"
+                                            optionValue="userID"
+                                            optionLabel="userName"></p-dropdown>
+                            </div>
+                            <div class="p-md-3 p-pt-0">
+                                <label for="firstname6">Status</label>
+                                <p-dropdown [options]="reviewStatusList" [ngClass]="{'disabled': isStatusRequested}"
+                                            appendTo="body"
+                                            formControlName="ReviewStatusID"
+                                            placeholder="Select Status"
+                                            (onChange)="onChangeStatus($event)"
+                                            optionValue="listValueID"
+                                            optionLabel="value"></p-dropdown>
+                            </div>
+                            <div class="p-md-3 p-pt-0">
+                                <label for="firstname6">Rate Type</label>
+                                <p-dropdown [options]="PayRateTypeListValues" [ngClass]="{'disabled': isEditableRateTypeRate}"
+                                            appendTo="body"
+                                            formControlName="RateTypeID"
+                                            placeholder="Select RateTypeID"
+                                            optionValue="listValueID"
+                                            optionLabel="value"></p-dropdown>
+
+                            </div>
+                            <div class="p-md-3 p-pt-0">
+                                <label for="firstname6">Rate</label>
+                                <p-inputNumber formControlName="Rate" [ngClass]="{'disabled': isEditableRateTypeRate}" mode="decimal" [maxlength]="5" inputId="withoutgrouping" placeholder="Billing Rate" [useGrouping]="false">
+                                </p-inputNumber>
+                            </div>
+                        </div>
+                        <div class="p-grid p-pb-3  mobile-display-block">
+                            <div class="p-md-12 p-pt-0">
+                                <label for="firstname6">Note</label>
+                                <textarea rows="3" formControlName="Note" cols="30" pInputTextarea></textarea>
+                            </div>
+                            <div class="p-md-12 p-pt-1" *ngIf="noteList.length > 0">
+                                <app-note [data]="noteList"></app-note>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-grid p-pt-1">
+                        <div class="p-md-8"></div>
+                        <div class="p-md-4" style="display:flex; justify-content:end;">
+                            <div [ngClass]="isStatusRequested === true ? 'p-md-7 p-pr-0' : 'p-md-4  p-pr-0'">
+                                <button pButton pRipple type="button" label="{{isSaveLabel}}" [ngClass]="{'disabled': isSaveButtonDisabled}" class="p-button-raised p-mr-2 p-mb-2" (click)="saveReviewQueue()"></button>
+                            </div>
+                            <div class="p-md-4 p-pr-0">
+                                <button pButton pRipple type="button" label="Cancel" class="p-button-raised p-button-danger p-mr-2 p-mb-2" style="margin-right: 0px !important; " (click)="Cancel()"></button>
+                            </div>
+                            </div>
+                    </div>
+                </div>
+            </form>
+        </p-dialog>
+    </div>
+</div>

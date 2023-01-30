@@ -1,0 +1,54 @@
+<div class="p-grid">
+    <div class="p-col-12">
+        <p-dialog [(visible)]="rolePermissionDialog" [style]="{width: '450px'}" [header]=addEditHeaderText [modal]="true" styleClass="p-fluid" [closable]="true" (onHide)="close()">
+            <form [formGroup]="addEditRolePermissionForm">
+                <div class="p-col-12">
+                    <div class="p-fluid p-formgrid p-grid mobile-display-block">
+                        <div class="p-md-12  p-pt-0" style="display: flex; color: red; justify-content: center;" *ngIf="ErrorMessage !== null && ErrorMessage !== undefined">
+                          {{ErrorMessage}}
+                        </div>
+                        <div class="p-md-12  p-pt-0" style="display:flex;">
+                            <label class="p-md-2" style="text-align: right;" for="firstname6">Role</label>
+                            <div class="p-md-10">{{roleName !== undefined  && roleName !== null && roleName !== '' ? roleName : ''}}</div>
+                        </div>
+                        <div class="p-md-12 p-pt-0" style="display:flex;">
+                            <label class="p-md-2 p-pr-0 display-flex" for="firstname6">Module *</label>
+                            <p-dropdown class="p-md-10" [options]="modulesList" [ngClass]="{ 'is-invalid-dropdown': submitted && addEditRolePermissionControls.ModuleID.errors, 'module-disabled' : addEditRolePermissionForm.value.RolePermissionID !== 0}"
+                                        appendTo="body"
+                                        formControlName="ModuleID"
+                                        placeholder="Select Module"
+                                        optionValue="moduleID"
+                                        optionLabel="moduleName"></p-dropdown>
+                        </div>
+                        <div class="p-md-12 p-pt-0" style="display:flex;">
+                            <div class="p-md-2"></div>
+                            <div class="p-md-2 display-flex ">
+                                <i class="pi pi-eye font-size-icon"></i>
+                                <p-checkbox class="checkbox-padding-left" formControlName="View" binary="true" inputId="binary"></p-checkbox>
+                            </div>
+                            <div class="p-md-2 display-flex">
+                                <i class="pi pi-plus font-size-icon "></i>
+                                <p-checkbox class="checkbox-padding-left" formControlName="Add" binary="true" inputId="binary"></p-checkbox>
+                            </div>
+                            <div class="p-md-2 display-flex">
+                                <i class="pi pi-pencil font-size-icon"></i>
+                                <p-checkbox class="checkbox-padding-left" formControlName="Update" binary="true" inputId="binary"></p-checkbox>
+                            </div>
+                            <div class="p-md-2 display-flex">
+                                <i class="pi pi-trash font-size-icon"></i>
+                                <p-checkbox class="checkbox-padding-left" formControlName="Delete" binary="true" inputId="binary"></p-checkbox>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="p-col-12" style="padding-right: 0px; display: flex; justify-content: end; padding-top: 1rem;">
+                        <div style="display: flex;">
+                            <button pButton pRipple type="button" label="Save" class="p-button-raised p-mr-2 p-mb-2" [disabled]="isSaveButtonDisabled" (click)="savePermission()"></button>
+                            <button pButton pRipple type="button" label="Cancel" class="p-button-raised p-button-danger  p-mb-2" style="margin-right: 0px !important; " (click)="Cancel()"></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </p-dialog>
+    </div>
+</div>

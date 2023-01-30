@@ -1,0 +1,139 @@
+<div class="p-grid">
+    <div class="p-col-12">
+        <p-dialog [(visible)]="candidateDialog" [style]="{width: '900px'}" [header]=addEditHeaderText [modal]="true" styleClass="p-fluid dialog-mobile-width" [closable]="true" (onHide)="close()">
+            <form [formGroup]="addEditCandidateForm">
+                <div *ngIf="fileNotExist" class=" p-col-12 invalid-feedback" style="text-align: center;">
+                    File is required
+                </div>
+                <div class="p-col-12">
+                    <div class="p-fluid p-formgrid p-grid mobile-display-block">
+                        <div class="p-md-4 p-pt-0">
+                            <label for="firstname6">Company *</label>
+                            <p-dropdown [options]="companyList" [ngClass]="{ 'is-invalid-dropdown': submitted && addeditCandidateFormControls.CompanyID.errors }"
+                                        appendTo="body"
+                                        formControlName="CompanyID"
+                                        placeholder="Select Company"
+                                        optionValue="companyID"
+                                        optionLabel="companyName"></p-dropdown>
+                        </div>
+                        <div class="p-md-4 p-pt-0">
+                            <label for="firstname6">First Name *</label>
+                            <input id="firstname6" type="text" pInputText formControlName="FirstName" placeholder="First Name" maxlength="50" [ngClass]="{ 'is-invalid': submitted && addeditCandidateFormControls.FirstName.errors }">
+                        </div>
+                        <div class="p-md-4 p-pt-0">
+                            <label for="firstname6">Last Name *</label>
+                            <input id="lastname6" type="text" pInputText formControlName="LastName" placeholder="Last Name" maxlength="50" [ngClass]="{ 'is-invalid': submitted && addeditCandidateFormControls.LastName.errors }">
+                        </div>
+                        <div class="p-md-4 p-pt-0">
+                            <label for="firstname6">Email *</label>
+                            <input id="firstname6" type="text" pInputText formControlName="Email" placeholder="Email" maxlength="100" [ngClass]="{ 'is-invalid': submitted && addeditCandidateFormControls.Email.errors }">
+                        </div>
+                        <div class="p-md-4  p-pt-0">
+                            <label for="firstname6">Phone</label>
+                            <p-inputMask mask="(999) 999-9999" formControlName="Phone" placeholder="Phone"></p-inputMask>
+                        </div>
+                        <div class="p-md-4 p-pt-0">
+                            <label for="firstname6">Job Title *</label>
+                            <input type="text" formControlName="JobTitle" pInputText placeholder="Job Title" maxlength="100" [ngClass]="{ 'is-invalid': submitted && addeditCandidateFormControls.JobTitle.errors }" />
+                        </div>
+                        <div class="p-md-12 p-pt-0">
+                            <label for="firstname6">Skills (Top 3) *</label>
+                            <p-chips formControlName="Skills" [addOnTab]="true" [addOnBlur]="true" [allowDuplicate]="false" [max]="3" [ngClass]="{ 'is-invalid-dropdown': submitted && addeditCandidateFormControls.Skills.errors }"></p-chips>
+                        </div>
+                        <div class="p-md-4 p-pt-0">
+                            <label for="firstname6">LinkedIn URL</label>
+                            <input type="text" formControlName="LinkedInURL" pInputText placeholder="LinkedIn URL" maxlength="200" />
+                        </div>
+                        <div class="p-md-4  p-pt-0">
+                            <label for="firstname6">City *</label>
+                            <input type="text" formControlName="City" pInputText placeholder="City" maxlength="50" [ngClass]="{ 'is-invalid': submitted && addeditCandidateFormControls.City.errors }" />
+                        </div>
+                        <div class="p-md-4 p-pt-0">
+                            <label for="firstname6">State *</label>
+                            <p-dropdown [options]="stateList" [ngClass]="{ 'is-invalid-dropdown': submitted && addeditCandidateFormControls.StateID.errors }"
+                                        appendTo="body"
+                                        formControlName="StateID"
+                                        placeholder="Select State"
+                                        optionValue="stateID"
+                                        optionLabel="stateName"></p-dropdown>
+                        </div>
+                        <div class="p-md-4 p-pt-0">
+                            <label for="firstname6">Country *</label>
+                            <p-dropdown [options]="countryList" [ngClass]="{ 'is-invalid-dropdown': submitted && addeditCandidateFormControls.CountryID.errors }"
+                                        appendTo="body"
+                                        formControlName="CountryID"
+                                        placeholder="Select Country"
+                                        optionValue="countryID"
+                                        optionLabel="countryName"></p-dropdown>
+                        </div>
+                        <div class="p-md-4 p-pt-0">
+                            <label for="firstname6">Billing Rate</label>
+                            <p-inputNumber formControlName="BillingRate" mode="decimal" [maxlength]="5" inputId="withoutgrouping" placeholder="Billing Rate" [useGrouping]="false">
+                            </p-inputNumber>
+                        </div>
+                        <div class="p-md-4 p-pt-0">
+                            <label for="firstname6">Experience *</label>
+
+                            <p-inputNumber formControlName="Experience" mode="decimal" inputId="withoutgrouping" placeholder="Experience" [ngClass]="{ 'is-invalid': submitted && addeditCandidateFormControls.Experience.errors }" [useGrouping]="false" suffix=" Years">
+                            </p-inputNumber>
+                        </div>
+                        <div class="p-md-4 p-pt-0">
+                            <label for="firstname6">Availability *</label>
+                            <p-dropdown [options]="availabilityList" [ngClass]="{ 'is-invalid-dropdown': submitted && addeditCandidateFormControls.AvailabilityID.errors }"
+                                        appendTo="body"
+                                        formControlName="AvailabilityID"
+                                        placeholder="Select Availability"
+                                        optionValue="listValueID"
+                                        optionLabel="value"></p-dropdown>
+                        </div>
+                        <div class="p-md-4 p-pt-0">
+                            <label for="RoleID">Work Authorization *</label>
+                            <p-dropdown [options]="workAuthList" [ngClass]="{ 'is-invalid-dropdown': submitted && addeditCandidateFormControls.WorkAuthID.errors }"
+                                        appendTo="body"
+                                        formControlName="WorkAuthID"
+                                        placeholder="Select Work Authorization"
+                                        optionValue="listValueID"
+                                        optionLabel="value"></p-dropdown>
+                        </div>
+                        <div class="p-md-2 p-pt-4" style="display: flex; justify-content: flex-start; align-items: center;">
+                            <div class="field-checkbox">
+                                <p-checkbox formControlName="IsRelocation" binary="true" inputId="binary"></p-checkbox>
+                                <label for="binary" style="padding-left: 5px;">Relocation</label>
+                            </div>
+                        </div>
+                        <div class="p-md-2 p-pt-4" style="display: flex; justify-content: flex-start; align-items: center;">
+                            <div class="field-checkbox">
+                                <p-checkbox formControlName="IsPublic" binary="true" inputId="binary"></p-checkbox>
+                                <label for="binary" style="padding-left: 5px;">Public</label>
+                            </div>
+                        </div>
+                            <div class="p-md-4" >
+                                <label for="picture">Resume:</label>
+                                <span *ngIf="candidate !== undefined" style="color: #2d82cb; cursor:pointer;" (click)="OnClickResume()" >
+                                    {{candidate.fileName}}
+                                </span>
+                            </div>
+
+                            <div class="p-md-4" style="display: flex; justify-content: flex-start; align-items: center;">
+                                <div class="custom-file">
+                                    <input #file type="file" id="customFile" accept=".pdf,.docx,.doc" (change)="onFileChanged($event)" />
+                                </div>
+
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" [style.width.%]="progress"></div>
+                            </div>
+                        </div>
+                        <div class="p-col-12" style="padding-right: 0px; display: flex; justify-content: end; padding-top: 1rem;">
+                            <div style="display: flex;">
+                                <button pButton pRipple type="button" label="Save" class="p-button-raised p-mr-2 p-mb-2" [disabled]="isSaveButtonDisabled" (click)="saveCandidate()" *ngIf="addEditCandidateForm.value.CandidateID === 0"></button>
+                                <button pButton pRipple type="button" label="Save" class="p-button-raised p-mr-2 p-mb-2" [disabled]="isSaveButtonDisabled" (click)="saveCandidate()" *ngIf="addEditCandidateForm.value.CandidateID !== 0 && candidate !== undefined && (userDetails.companyID === candidate.companyID ||
+                                       userDetails.roleShort === roleShortConstants.SUPERADMIN)"></button>
+                                <button pButton pRipple type="button" label="Cancel" class="p-button-raised p-button-danger p-mb-2" style="margin-right: 0px !important; " (click)="Cancel()"></button>
+                            </div>
+                        </div>
+                    </div>
+            </form>
+        </p-dialog>
+    </div>
+</div>

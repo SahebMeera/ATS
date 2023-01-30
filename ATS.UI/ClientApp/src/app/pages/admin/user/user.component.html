@@ -1,0 +1,249 @@
+<div class="p-grid" *ngIf="rolePermission !== null && rolePermission !== undefined && rolePermission.view === true">
+    <div class="p-col-12">
+        <div class="card hidden-web">
+            <p-toolbar>
+                <ng-template pTemplate="left">
+                    <div class="p-d-flex p-flex-column p-flex-md-row table-header">
+                        <div class="p-input-icon-left" style="font-size:23px;">
+                            Users
+                        </div>
+                    </div>
+                </ng-template>
+            </p-toolbar>
+            <p-table #dt [value]="users" [columns]="cols" [rows]="10" [paginator]="true" [globalFilterFields]="['firstName','lastName','roleName','isActive']"
+                     [rowHover]="true"
+                     styleClass="p-datatable-customers"
+                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true"
+                     sortField="firstName" [sortOrder]="1">
+                <ng-template pTemplate="caption">
+                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between table-header">
+                        <div class="p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search..." />
+                        </div>
+                        <div [ngClass]="{'display-none': isAddRolePermission}">
+                            <button pButton pRipple label="Add" style="margin: 0px !important;" icon="pi pi-plus" class="p-button-primary p-mr-2 p-mb-2" (click)="addUser()"></button>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="firstName">First Name <p-sortIcon field="firstName"></p-sortIcon></th>
+                        <th pSortableColumn="lastName">Last Name <p-sortIcon field="lastName"></p-sortIcon></th>
+                        <th pSortableColumn="companyName">Company <p-sortIcon field="companyName"></p-sortIcon></th>
+                        <th pSortableColumn="roleName">
+                            <div class="flex justify-content-center align-items-center">
+                                Role <p-sortIcon field="roleName"></p-sortIcon>
+                                <p-columnFilter field="roleName" matchMode="in" display="menu"
+                                                [showClearButton]="false" [showApplyButton]="false"
+                                                [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+                                    <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                        <p-multiSelect [ngModel]="value"
+                                                       defaultLabel="Admin"
+                                                       [options]="rolesFilters"
+                                                       placeholder="Any"
+                                                       [filter]="true"
+                                                       appendTo="body"
+                                                       (onChange)="filter($event.value,'roleName','in')"
+                                                       optionLabel="label" optionValue="value">
+                                            <ng-template let-option pTemplate="item">
+                                                <div class="p-multiselect-representative-option">
+                                                    <span class="p-ml-1">{{option.label}}</span>
+                                                </div>
+                                            </ng-template>
+                                        </p-multiSelect>
+                                    </ng-template>
+                                </p-columnFilter>
+                            </div>
+                        </th>
+                        <th pSortableColumn="email">Email <p-sortIcon field="email"></p-sortIcon></th>
+                        <th pSortableColumn="isActive">
+                            <div class="flex justify-content-center align-items-center">
+                                Is Atcive <p-sortIcon field="isActive"></p-sortIcon>
+                                <p-columnFilter type="boolean" field="isActive" matchMode="in" display="menu"
+                                                [showClearButton]="false" [showApplyButton]="false"
+                                                [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+                                    <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                        <p-multiSelect [ngModel]="value"
+                                                       [options]="isAtciveStatus"
+                                                       placeholder="Any"
+                                                       (onChange)="filter($event.value, 'isActive', 'in')"
+                                                       optionLabel="label" optionValue="value">
+                                            <ng-template let-option pTemplate="item">
+                                                <div class="p-multiselect-representative-option">
+                                                    <span class="p-ml-1">{{option.label}}</span>
+                                                </div>
+                                            </ng-template>
+                                        </p-multiSelect>
+                                    </ng-template>
+                                </p-columnFilter>
+                            </div>
+                        </th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-user>
+                    <tr>
+                        <td>
+                            <span class="p-column-title">FirstName</span>
+                            {{user.firstName}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">LastName</span>
+                            {{user.lastName}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Company</span>
+                            {{user.companyName}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Role</span>
+                            {{user.roleName}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Email</span>
+                            {{user.email}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">IsActive</span>
+                            <!--<<p-inputSwitch [value]="registration.isActive" [showValue]="false"></p-inputSwitch>-->
+                            {{user.isActive === true ? 'Yes' : 'No'}}
+                        </td>
+                        <td [ngClass]="{'display-none': isUpdateRolePermission}">
+                            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-primary p-mr-2" (click)="editUser(user)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    <div class="p-d-flex p-ai-center p-jc-between">
+                        In total there are {{users ? users.length : 0 }} users.
+                    </div>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <div class="hidden-web hidden-mobile">
+            <div class="p-input-icon-left" style="font-size: 23px; padding-bottom: 1rem;">
+                Users
+            </div>
+            <div>
+                <div class="p-d-flex mobile-display-block" style="justify-content:space-between; padding-bottom:1rem;">
+                    <div class="p-input-icon-left mobile-display-grid">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" id="myFilter" (input)="applyFilterGlobal()" placeholder="Search..." />
+                    </div>
+                    <div style="padding-top: 10px;"  [ngClass]="{'display-none': isAddRolePermission}">
+                        <button pButton pRipple label="Add" style="margin: 0px !important;" icon="pi pi-plus" class="p-button-primary p-mr-2 p-mb-2" (click)="addUser()"></button>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="users !== undefined && users.length > 0"  id="myItems">
+                <div class="card mobile-card-view " style="padding-bottom: 0.5rem; margin-bottom: 1rem;" *ngFor="let user of users" (click)="editUser(user)">
+                    <div class="card-body" style="padding-bottom:0.5rem !important;">
+                        <div class="p-fluid p-formgrid p-grid">
+                            <div class="p-col-12 p-pl-0" style="display: flex;">
+                                <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">First Name :</label>
+                                <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                    {{user.firstName}}
+                                </div>
+                            </div>
+                            <div class="p-col-12 p-pl-0" style="display: flex;">
+                                <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Last Name :</label>
+                                <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                    {{user?.lastName}}
+                                </div>
+                            </div>
+                            <div class="p-col-12 p-pl-0" style="display: flex;">
+                                <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Company :</label>
+                                <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                    {{user?.companyName}}
+                                </div>
+                            </div>
+                            <div class="p-col-12 p-pl-0" style="display: flex;">
+                                <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Role :</label>
+                                <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                    {{user?.roleName}}
+                                </div>
+                            </div>
+                            <div class="p-col-12 p-pl-0" style="display: flex;">
+                                <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Email :</label>
+                                <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                    {{user?.email}}
+                                </div>
+                            </div>
+                            <div class="p-col-12 p-pl-0" style="display: flex;">
+                                <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Is Active :</label>
+                                <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                    {{user?.isActive}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <p-dialog [(visible)]="userDialog" [style]="{width: '900px'}" [header]=addEditHeaderText [modal]="true" styleClass="p-fluid" [closable]="true" (onHide)="close()">
+            <form [formGroup]="addEditUserForm">
+                <div class="p-p-col-12 p-d-flex p-jc-center" *ngIf="ErrorMessage != '' && ErrorMessage != undefined">
+                    <span class="invalid-feedback">{{ErrorMessage}}</span>
+                </div>
+                <div class="p-col-12">
+                    <div class="p-fluid p-formgrid p-grid mobile-display-block">
+                        <div class="p-md-6 p-pt-0">
+                            <label for="firstname6">First Name *</label>
+                            <input id="firstname6" type="text" pInputText formControlName="FirstName" placeholder="First Name" maxlength="50" [ngClass]="{ 'is-invalid': submitted && addeditUserFormControls.FirstName.errors }">
+                        </div>
+                        <div class="p-md-6 p-pt-0">
+                            <label for="firstname6">Last Name *</label>
+                            <input id="lastname6" type="text" pInputText formControlName="LastName" placeholder="Last Name" maxlength="50" [ngClass]="{ 'is-invalid': submitted && addeditUserFormControls.LastName.errors }">
+                        </div>
+                        <div class="p-md-6 p-pt-0">
+                            <label for="firstname6">Email *</label>
+                            <input id="firstname6" type="text" pInputText formControlName="Email" placeholder="Email" [ngClass]="{'disabled': !isUserAddEdit}" [ngClass]="{ 'is-invalid': submitted && addeditUserFormControls.Email.errors }">
+                        </div>
+                        <div class="p-md-6 p-pt-0">
+                            <label for="firstname6">Password *</label>
+                            <input type="password" formControlName="Password" pInputText placeholder="Password" [ngClass]="{'disabled': !isUserAddEdit}" [ngClass]="{ 'is-invalid': submitted && addeditUserFormControls.Password.errors }" />
+                        </div>
+                        <div class="p-md-6 p-pt-0">
+                            <label for="firstname6">Company *</label>
+                            <p-dropdown [options]="companyList" [ngClass]="{ 'is-invalid-dropdown': submitted && addeditUserFormControls.CompanyID.errors }"
+                                        appendTo="body"
+                                        formControlName="CompanyID"
+                                        placeholder="Select Company"
+                                        optionValue="companyID"
+                                        optionLabel="companyName"></p-dropdown>
+                        </div>
+                        <div class="p-md-6 p-pt-0">
+                            <label for="RoleID">Role *</label>
+                            <p-dropdown [options]="roles" [ngClass]="{ 'is-invalid-dropdown': submitted && addeditUserFormControls.RoleID.errors }"
+                                        appendTo="body"
+                                        formControlName="RoleID"
+                                        placeholder="Select Role"
+                                        optionValue="roleID"
+                                        optionLabel="roleName"></p-dropdown>
+                        </div>
+                        <div class="p-md-6 removed-padding" style="display: flex; justify-content: flex-start; align-items: center;">
+                            <div class="field-checkbox">
+                                <p-checkbox formControlName="IsActive" binary="true" inputId="binary"></p-checkbox>
+                                <label for="binary" style="padding-left: 5px;">Is Active</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-col-12" style="padding-right: 0px; display: flex; justify-content: end; padding-top: 1rem;">
+                        <div style="display: flex;">
+                            <button pButton pRipple type="button" label="Save" [disabled]="isSaveButtonDisabled" class="p-button-raised p-mr-2 p-mb-2" (click)="userValidation()"></button>
+                            <button pButton pRipple type="button" label="Cancel" class="p-button-raised p-button-danger p-mr-2 p-mb-2" style="margin-right: 0px !important;" (click)="Cancel()"></button>
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </p-dialog>
+    </div>
+</div>
+<div class="dashboard p-grid p-fluid" *ngIf="rolePermission !== null && rolePermission !== undefined && rolePermission.view === false">
+    No View Access for User
+</div>
+<p-toast></p-toast>

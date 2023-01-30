@@ -1,0 +1,19 @@
+.invalid-feedback {
+    color: #E91E63;
+    display: block;
+}
+:host::ng-deep .disabled {
+    opacity: 0.6;
+    pointer-events: none;
+
+     .p-dropdown {
+        opacity: 0.6;
+        pointer-events: none;
+    }
+}
+:host::ng-deep .required-border {
+    .p-dropdown {
+        outline: 1px solid #E91E63;
+    }
+
+}

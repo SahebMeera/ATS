@@ -1,0 +1,70 @@
+:host ::ng-deep .p-paginator {
+    display: flex;
+    align-items: center;
+    justify-content: end !important;
+    flex-wrap: wrap;
+}
+
+.invalid-feedback {
+    color: #E91E63;
+    display: block;
+}
+:host::ng-deep .p-multiselect {
+    min-width: 13rem !important;
+    width: 14rem !important;
+}
+:host::ng-deep .notes-icons {
+    .p-button.p-button-icon-only {
+        border-radius: 0;
+        height: auto;
+        width:auto !important;
+        .fa{
+            font-size:18px;
+        }
+    }
+}
+:host::ng-deep .close-button {
+    .p-button.p-button-icon-only.p-button-rounded {
+        border-radius: 0;
+        height: auto;
+        width: auto !important;
+        .fa {
+            font-size: 18px !important;
+        }
+    }
+}
+:host::ng-deep .p-component:disabled {
+    opacity: 0 !important;
+}
+@media screen and (max-width: 769px) {
+    .mobile-display-block {
+        display: block !important;
+    }
+
+    :host::ng-deep .p-multiselect {
+        display: flex;
+        min-width: auto !important;
+        width: auto !important;
+    }
+
+    .mobile-display-grid {
+        display: grid !important;
+    }
+}
+.closeDisabled {
+    opacity: 0;
+}
+:host ::ng-deep.p-menu.p-menu-overlay {
+    left: 250.413px !important;
+    width: auto !important;
+}
+:host ::ng-deep .close-button {
+    .p-menu.p-menu-overlay {
+        position:absolute;
+        left: 1150px !important;
+        top:  auto !important;
+        width: auto !important;
+    }
+}
+
+

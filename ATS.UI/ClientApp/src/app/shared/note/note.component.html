@@ -1,0 +1,96 @@
+<div class="p-grid  internal-notes-container hidden-web">
+    <div class="p-col-12" style="margin-bottom: 15px; box-shadow: 0 3px 4px #ced4da; " *ngFor="let note of data; let i = index;">
+        <div class="p-grid">
+            <div class="p-md-12" style="padding-bottom: 2px; padding-top: 3px;">
+                <strong style="display: flex;">
+                    <div class="p-md-3 p-p-0">
+                        <span>{{commonUtils.formatDateTimeWithAmPM(note?.dateNoted)}}</span>
+                    </div>
+                    <div class="p-md-3 p-pr-0 p-pt-0 p-pb-0 p-pl-0">
+                        <span>Reviewer:&nbsp;{{note.reviewer != null && note.reviewer != '' ? note.reviewer : '--'  }}</span>
+                    </div>
+                    <div class="p-md-3 p-pr-0 p-pt-0 p-pb-0 p-pl-2">
+                        <span>Status:&nbsp;{{note?.reviewStatus !==  null ? note?.reviewStatus : '--'}}</span>
+                    </div>
+                    <!--<div class="p-md-2 p-pr-0 p-pt-0 p-pb-0 p-pl-2">
+                        <span>Rate:&nbsp;{{note?.rateType !== null && note?.rateType !== undefined ? note?.rateType + '/' : '--/' }}{{ note?.rate !== null && note?.rate !== undefined ? note?.rate : '--'}}</span>
+                    </div>-->
+                    <div class="p-md-3 p-pr-0 p-pt-0 p-pb-0 p-pl-2">
+                        <span>Note By:&nbsp;{{note?.noteByName !== null ? note?.noteByName : '--'}}</span>
+                    </div>
+                </strong>
+            </div>
+            <div class="p-md-12" style="padding-top:3px; padding-bottom:0px;">
+                <p><span style="font-weight:500;">{{note?.requirement}}:</span> {{note?.noteDesc !== null ? note?.noteDesc : '--'}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="internal-notes-container  hidden-web hidden-mobile">
+    <div class="card mobile-card-view " style="padding-bottom: 0.5rem; margin-bottom: 1rem; margin-top: 10px" *ngFor="let note of data; let i = index;">
+        <div class="card-body" style="padding-bottom:0.5rem !important;">
+            <div class="p-fluid p-formgrid p-grid mobile-display-block">
+                <strong>
+                    <div class="p-col-12 p-pl-0" style="display: flex;">
+                        <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Date :</label>
+                        <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                            {{commonUtils.formatDateTimeWithAmPM(note?.dateNoted)}}
+                        </div>
+                    </div>
+                    <div class="p-col-12 p-pl-0" style="display: flex;">
+                        <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Reviewer :</label>
+                        <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                            {{note.reviewer != null && note.reviewer != '' ? note.reviewer : '--'  }}
+                        </div>
+                    </div>
+                    <div class="p-col-12 p-pl-0" style="display: flex;">
+                        <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Status :</label>
+                        <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                            {{note?.reviewStatus !==  null ? note?.reviewStatus : '--'}}
+                        </div>
+                    </div>
+                    <div class="p-col-12 p-pl-0" style="display: flex;">
+                        <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Note By :</label>
+                        <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                            {{note?.noteByName !== null ? note?.noteByName : '--'}}
+                        </div>
+                    </div>
+                    </strong>
+                    <div class="p-md-12" style="padding-top:3px; padding-left:4rem; padding-bottom:0px;">
+                        <p><span style="font-weight:500;">{{note?.requirement}}:</span> {{note?.noteDesc}}</p>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <!--<div class="p-col-12" style="margin-bottom: 15px; box-shadow: 0 3px 4px #ced4da; " *ngFor="let note of data; let i = index;">
+        <div class="p-grid mobile-display-block">
+                <strong>
+                    <div class="p-col-12 p-pl-0" style="display: flex;">
+                        <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Date :</label>
+                        <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                            {{commonUtils.formatDateTimeWithAmPM(note?.dateNoted)}}
+                        </div>
+                    </div>
+                        <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Reviewer :</label>
+                        <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                            {{note.reviewer != null && note.reviewer != '' ? note.reviewer : '--'  }}
+                        </div>
+                    <div class="p-col-12 p-pl-0" style="display: flex;">
+                        <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Status :</label>
+                        <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                            {{note?.reviewStatus !==  null ? note?.reviewStatus : '--'}}
+                        </div>
+                    </div>
+                    <div class="p-col-12 p-pl-0" style="display: flex;">
+                        <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Note By :</label>
+                        <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                            {{note?.noteByName !== null ? note?.noteByName : '--'}}
+                        </div>
+                    </div>
+                </strong>
+            <div class="p-md-12" style="padding-top:3px; padding-bottom:0px;">
+                <p>{{note?.noteDesc}}</p>
+            </div>
+        </div>
+    </div>-->
+</div>

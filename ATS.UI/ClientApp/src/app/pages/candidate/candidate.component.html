@@ -1,0 +1,256 @@
+<div class="p-grid mobile-display-grid" *ngIf="rolePermission !== null && rolePermission !== undefined && rolePermission.view === true">
+    <div class="p-col-12 hidden-web">
+        <div class="card">
+            <p-toolbar>
+                <ng-template pTemplate="left">
+                    <div class="p-d-flex p-flex-column p-flex-md-row table-header">
+                        <div class="p-input-icon-left" style="font-size:23px;">
+                            Candidates
+                        </div>
+                    </div>
+                </ng-template>
+            </p-toolbar>
+            <p-table #dt [value]="candidateList" [columns]="cols" [rows]="10" [paginator]="true"
+                     [globalFilterFields]="['firstName','lastName','companyName','phone', 'email','workAuthorization','availability','stateName','isRelocation','isActive', 'skills']"
+                     [rowHover]="true"
+                     sortField="firstName" [sortOrder]="1"
+                     styleClass="p-datatable-customers"
+                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+                <ng-template pTemplate="caption">
+                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between table-header">
+                        <div class="p-md-5 p-p-0 p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                            <div class=" p-input-icon-left">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search..." />
+                            </div>
+                            <div style="padding-right: 4em;" *ngIf="userDetails.roleShort !== roleShortConstants.SUPERADMIN && userDetails.roleShort !== roleShortConstants.ADMIN">
+                                <!--<div style="padding-right: 4em;" >-->
+                                <p-dropdown [options]="isPublicList"
+                                            appendTo="body"
+                                            [(ngModel)]="isPublicID"
+                                            placeholder="Select Public"
+                                            (onChange)="onChangePublic($event)"
+                                            optionValue="value"
+                                            optionLabel="label"></p-dropdown>
+                            </div>
+                        </div>
+                        <div class="p-md-6 p-p-0 p-d-flex p-flex-column p-flex-md-row" [ngClass]="userDetails.roleShort === 'SUPERADMIN' ? 'p-jc-md-between' : 'p-jc-md-end'">
+                            <div *ngIf="userDetails.roleShort === roleShortConstants.SUPERADMIN">
+                                <label class="p-pr-3" for="firstname6">Company :</label>
+                                <p-multiSelect [options]="companyList"
+                                               defaultLabel="Select a Company"
+                                               [(ngModel)]="selectedCompanys"
+                                               (onChange)="onChangeCompany($event)"
+                                               optionValue="companyID"
+                                               optionLabel="companyName"></p-multiSelect>
+                            </div>
+                            <div [ngClass]="{'display-none': isAddRolePermission}">
+                                <button pButton pRipple label="Add" style="margin: 0px !important;" icon="pi pi-plus" class="p-button-primary p-mr-2 p-mb-2" (click)="addcandidate()"></button>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="firstName">First Name <p-sortIcon field="firstName"></p-sortIcon></th>
+                        <th pSortableColumn="lastName">Last Name <p-sortIcon field="lastName"></p-sortIcon></th>
+
+                        <th pSortableColumn="jobTitle">Title <p-sortIcon field="jobTitle"></p-sortIcon></th>
+                        <th pSortableColumn="skills"> Skills <p-sortIcon field="skills"></p-sortIcon></th>
+                        <!--<th pSortableColumn="workAuthorization">Authorization <p-sortIcon field="workAuthorization"></p-sortIcon></th>-->
+                        <th pSortableColumn="billingRate">Rate <p-sortIcon field="billingRate"></p-sortIcon></th>
+                        <th pSortableColumn="experience">Experience <p-sortIcon field="experience"></p-sortIcon></th>
+                        <!--<th pSortableColumn="availability">Availability <p-sortIcon field="availability"></p-sortIcon></th>-->
+                        <th pSortableColumn="stateName">State <p-sortIcon field="stateName"></p-sortIcon></th>
+                        <th pSortableColumn="isRelocation">Relocation <p-sortIcon field="isRelocation"></p-sortIcon></th>
+                        <th pSortableColumn="isPublic">Public <p-sortIcon field="isPublic"></p-sortIcon></th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-candidate>
+                    <tr>
+                        <td>
+                            <span class="p-column-title">FirstName</span>
+                            {{candidate.firstName}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">LastName</span>
+                            {{candidate.lastName}}
+                        </td>
+
+                        <td>
+                            <span class="p-column-title">Title</span>
+                            {{candidate.jobTitle}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Skills</span>
+                            {{candidate.skills}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Rate</span>
+                            {{candidate.billingRate}}
+                        </td>
+
+                        <td>
+                            <span class="p-column-title">Experience</span>
+                            {{candidate.experience !== null ? candidate.experience + ' Years' : ''}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">State</span>
+                            {{candidate.stateName}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Relocation</span>
+                            {{candidate.isRelocation === true ? 'Yes' : 'No'}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Public</span>
+                            {{candidate.isPublic === true ? 'Yes' : 'No'}}
+                        </td>
+                        <td style="width: 80px;">
+                            <div [ngClass]="{'display-none': isUpdateRolePermission}" style="display: contents;">
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-primary p-mr-2" (click)="editcandidate(candidate)"></button>
+                            </div>
+                            <p-button class="p-button-rounded p-button-primary p-mr-0 notes-icons p-mr-2" icon="fa fa-commenting-o" (click)="openNotesList(candidate)"></p-button>
+                            <p-button class="p-button-rounded p-button-primary p-mr-2 notes-icons" icon="fa fa-file-text-o" (click)="openResume(candidate)"></p-button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    <div class="p-d-flex p-ai-center p-jc-between">
+                        In total there are {{candidateList ? candidateList.length : 0 }} candidates.
+                    </div>
+                </ng-template>
+            </p-table>
+        </div>
+
+    </div>
+    <!--// mobile design start-->
+    <div class="hidden-web hidden-mobile">
+        <div class="p-input-icon-left" style="font-size: 23px; padding-bottom: 1rem;">
+            Candidates
+        </div>
+        <div class="p-d-flex mobile-display-block " style="justify-content:space-between; padding-bottom:1rem;">
+            <div class="p-md-6 p-p-0 p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                <div class=" p-input-icon-left mobile-display-grid">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" id="myFilter" (input)="applyFilterGlobal()" placeholder="Search..." />
+                </div>
+                <div style="padding-top: 10px;" *ngIf="userDetails.roleShort !== roleShortConstants.SUPERADMIN">
+                    <!--<div style="padding-right: 4em;" >-->
+                    <p-dropdown [options]="isPublicList" class="mobile-display-grid"
+                                appendTo="body"
+                                [(ngModel)]="isPublicID"
+                                placeholder="Select Public"
+                                (onChange)="onChangePublic($event)"
+                                optionValue="value"
+                                optionLabel="label"></p-dropdown>
+                </div>
+            </div>
+            <div class="p-md-6 p-p-0 p-d-flex p-flex-column p-flex-md-row"  [ngClass]="userDetails.roleShort === 'SUPERADMIN' ? 'p-jc-md-between' : 'p-jc-md-end'">
+                <div *ngIf="userDetails.roleShort === roleShortConstants.SUPERADMIN" style="padding-top:10px;">
+                    <label class="p-pr-3 mobile-card-view-label" style="display: block !important;" for="firstname6">Company :</label>
+                    <p-multiSelect [options]="companyList"
+                                   defaultLabel="Select a Company"
+                                   [(ngModel)]="selectedCompanys"
+                                   (onChange)="onChangeCompany($event)"
+                                   optionValue="companyID"
+                                   optionLabel="companyName"></p-multiSelect>
+                </div>
+                <div style="padding-top:10px;" [ngClass]="{'display-none': isAddRolePermission}">
+                    <button pButton pRipple label="Add" style="margin: 0px !important;" icon="pi pi-plus" class="p-button-primary p-mr-2 p-mb-2" (click)="addcandidate()"></button>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="candidateList !== undefined && candidateList.length > 0" id="myItems">
+            <div class="card mobile-card-view " style="padding-bottom: 0.5rem; margin-bottom: 1rem;" *ngFor="let candidate of candidateList" >
+                <div class="card-body" style="padding-bottom:0.5rem !important;">
+                    <div class="p-fluid p-formgrid p-grid">
+                        <div class="p-col-12 p-pl-0" style="display: flex; justify-content: end;">
+                            <p-menu #popupMenu [popup]="true" [model]="items"></p-menu>
+                            <button pButton type="button" (click)="toggleMenu(popupMenu, $event, candidate)" style="position: absolute; background: white;" icon="pi pi-ellipsis-v" class="p-button-rounded p-button-plain p-button-text"></button>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">First Name :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{candidate.firstName}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Last Name :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{candidate?.lastName}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Job Title :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{candidate?.jobTitle}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Skills :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{candidate?.skills}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Billing Rate :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{candidate?.billingRate}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Experience :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{candidate.experience !== null ? candidate.experience + ' Years' : ''}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">State :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{candidate?.stateName}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Relocation :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{candidate.isRelocation === true ? 'Yes' : 'No'}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Public :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{candidate.isPublic === true ? 'Yes' : 'No'}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <app-add-edit-candidate #addEditCandidate (loadCandidateDetails)="loadCandidateList()"></app-add-edit-candidate>
+    </div>
+</div>
+<div class="dashboard p-grid p-fluid" *ngIf="rolePermission !== null && rolePermission !== undefined && rolePermission.view === false">
+    No View Access for Candidate
+</div>
+
+<div class="p-grid">
+    <div class="p-col-12">
+        <p-dialog [(visible)]="notesDialog" [style]="{width: '900px'}" [header]=addEditHeaderText [modal]="true" styleClass="p-fluid">
+            <div class="p-col-12">
+                <div class="p-fluid p-formgrid ">
+                    <div class="p-grid p-pb-2 p-pt-2 mobile-display-block">
+                        <div class="p-md-12 p-pt-2" *ngIf="noteList.length > 0">
+                            <app-note [data]="noteList"></app-note>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </p-dialog>
+    </div>
+</div>
+<p-toast></p-toast>
+

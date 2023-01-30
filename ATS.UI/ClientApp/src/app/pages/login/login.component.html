@@ -1,0 +1,121 @@
+<div class="wraper">
+<div class="signInBlock">
+    <div class="signUp-form-block mobile-display-block">
+        <div class="p-col-5 signUp-left-block mobile-display-contents">
+            <div class="signin_content_div">
+                <div class="signUpTitle-1 mobile-padding-top">Fully Scalable, Fully Integrated Applicant Tracking System</div>
+                <div class="sText">
+                    <ul>
+                        <li>Single Click Job Marketing</li>
+                        <li>AI powered candidate matching</li>
+                        <li>Passive Talent Pools</li>
+                        <!--<li>Branded Career Portal</li>
+                        <li>Seamless Interview and Submission Management</li>-->
+                        <li>Background Checks</li>
+                        <li>Digital Onboarding</li>
+                        <li>Custom Business Intelligence</li>
+                        <li>150+ Marketplace Partners</li>
+                    </ul>
+                </div>
+                <div class="alreadySign">Don't have an account? <br><a style="display: inline-block;" href="/registration/personalDetails"> Sign Up</a></div>
+                <div class="copyW mobile-padding-bottom" >© 2022 ATS.</div>
+            </div>
+        </div>
+        <div class="p-col-7 signUp-right-block mobile-table-cell">
+            <div class="signIn-logo"><a href="/pages" class="cancle_home"><img src="assets/demo/images/DEV.jpg" alt=""></a></div>
+            <div class="signFields" *ngIf="!isForgotPassword && !isPasswordAdded">
+                <div class="all_panels">
+                    <div class="signUpTitle-2">Sign In</div>
+                    <div class="p-fluid">
+                        <form [formGroup]="loginForm">
+                            <div class="p-grid p-fluid">
+                                <div class="p-col-12">
+                                    <input id="Email" type="text" pInputText formControlName="Email" placeholder="Email">
+                                    <div *ngIf="loginFormControls.Email.touched && loginFormControls.Email.errors" class="invalid-feedback">
+                                        Email is required
+                                    </div>
+                                </div>
+                                <div class="p-col-12">
+                                    <input type="password" formControlName="Password" pInputText placeholder="Password" />
+                                    <div *ngIf="loginFormControls.Password.touched && loginFormControls.Password.errors" class="invalid-feedback">
+                                        Password is required
+                                    </div>
+                                </div>
+                                <!-- <div class="p-col-12 p-md-6">
+                            <p-checkbox></p-checkbox>
+                            <span class="remember-me">Remember Me</span>
+                        </div> -->
+                                <div class="p-col-12 p-md-12 p-p-0" style="display: flex; justify-content: end;">
+                                    <p-button label="Forgot Password" styleClass="p-button-link" class="p-p-0" (onClick)="forgotPassword()"></p-button>
+                                </div>
+                                <div class="p-col-12">
+                                    <button pButton pRipple type="button" label="SignIn" class="p-button-raised p-mr-2 p-mb-2" (click)="signIn()"></button>
+                                </div>
+
+                                <div class="p-col-12">
+                                    <div *ngIf="userInfo && userInfo.isValid === false" class="invalid-feedback">
+                                        Email/Password Invalid
+                                    </div>
+                                    <div *ngIf="userInfo && userInfo.isValid === true && (userInfo.isActive === false || userInfo.isCompanyActive === false)" class="invalid-feedback">
+                                        User is not active
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="signFields" *ngIf="isForgotPassword && !isPasswordAdded">
+                <div class="all_panels">
+                    <div class="signUpTitle-2">Forgot your password</div>
+                    <div class="p-fluid">
+                        <div class="p-grid p-fluid">
+                            <div class="p-col-12">
+                                <input type="text" pInputText id="name" [(ngModel)]="forgotEmail" required placeholder="Enter your email" />
+                                <div *ngIf="forgotEmail.touched && forgotEmail.errors" class="invalid-feedback">
+                                    Email is required
+                                </div>
+                            </div>
+                            <div class="p-col-12 p-md-7" style="display: flex;">
+                                <p-button type="button" label="Submit" class="p-pr-1" (onClick)="forgotPasswordSubmit()"></p-button>
+                                <button pButton pRipple type="button" label="Cancel" class="p-button-outlined p-button-secondary p-mr-2 p-mb-2" (click)="forgotPasswordCancel()"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="signFields" *ngIf="isPasswordAdded">
+                <div class="all_panels">
+                    <div class="signUpTitle-2">Password Added</div>
+                    <div class="p-fluid">
+                        <form [formGroup]="passwordForm">
+                            <div class="p-grid p-fluid">
+                                <div class="p-col-12">
+                                    <input type="password" formControlName="Password" pInputText placeholder="Password" />
+                                    <div *ngIf="passwordFormControls.Password.touched && passwordFormControls.Password.errors" class="invalid-feedback">
+                                        Password is required
+                                    </div>
+                                </div>
+                                <div class="p-col-12">
+                                    <input type="password" formControlName="ConfirmPassword" pInputText placeholder="ConfirmPassword" />
+                                    <div *ngIf="passwordFormControls.ConfirmPassword.touched && passwordFormControls.ConfirmPassword.invalid"
+                                         class="invalid-feedback">
+                                        <div *ngIf="passwordFormControls.ConfirmPassword.errors.required">ConfirmPassword is required.</div>
+                                        <div *ngIf="passwordFormControls.ConfirmPassword.errors.confirmedValidator">
+                                            Password and Confirm Password must be match.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-col-12">
+                                    <button pButton pRipple type="button" label="Submit" class="p-button-raised p-mr-2 p-mb-2" (click)="passwordUpdate()"></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

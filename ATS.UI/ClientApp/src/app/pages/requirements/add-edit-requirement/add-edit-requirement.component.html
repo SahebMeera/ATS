@@ -1,0 +1,411 @@
+<div class="p-grid">
+    <div class="p-col-12">
+        <div class="card p-pt-0">
+            <div class="p-col-12 p-pb-0">
+                <div class="p-fluid p-formgrid p-grid mobile-display-block">
+                    <div class="p-md-9" style="font-size:20px;" [ngClass]="addEditRequirementForm.value.RequirementID !== 0 ? 'p-md-9' : 'p-md-11'">
+                        {{addEditHeaderText}}
+                    </div>
+                    <div class="p-md-3 p-pt-0" *ngIf="addEditRequirementForm.value.RequirementID !== 0">
+                        <div style="display: flex;">
+                            <button pButton pRipple type="button" label="Save" [disabled]="isSavebuttonDisabled" class="p-button-raised p-mr-2 p-mb-2" (click)="saveCandidate()"></button>
+                            <button pButton pRipple type="button" label="Submit" *ngIf="requirementDetail?.status.toUpperCase() !== requirementStatusConstants.MISS && requirementDetail?.status.toUpperCase() !== requirementStatusConstants.SUCCESS " class="p-button-raised p-mr-2 p-mb-2" (click)="submit()"></button>
+                            <button pButton pRipple type="button" label="Cancel" class="p-button-raised p-button-danger p-mr-2 p-mb-2" style="margin-right: 0px !important;" (click)="Cancel()"></button>
+                        </div>
+                    </div>
+                    <div class="p-md-1 p-pt-0" *ngIf="addEditRequirementForm.value.RequirementID === 0">
+                        <div style="display: flex;">    
+                            <button pButton pRipple type="button" label="Save" [disabled]="isSavebuttonDisabled" class="p-button-raised p-mr-2 p-mb-2" (click)="saveCandidate()"></button>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <form [formGroup]="addEditRequirementForm">
+                <div class="p-col-12">
+                    <div class="p-fluid p-formgrid">
+                        <div class="p-grid p-pb-2 mobile-display-block">
+                            <div class="p-md-4 p-pt-0 removed-padding">
+                                <label for="firstname6">Company *</label>
+                                <p-dropdown [options]="companyList" [ngClass]="{ 'is-invalid-dropdown': submitted && addeditCandidateFormControls.CompanyID.errors }"
+                                            appendTo="body"
+                                            formControlName="CompanyID"
+                                            placeholder="Select Company"
+                                            (onChange)="onChangeCompany($event)"
+                                            optionValue="companyID"
+                                            optionLabel="companyName"></p-dropdown>
+                            </div>
+                            <div class="p-md-4 p-pt-0 removed-padding">
+                                <label for="firstname6">Client *</label>
+                                <p-dropdown [options]="clientList" [ngClass]="{ 'is-invalid-dropdown': submitted && addeditCandidateFormControls.ClientID.errors }"
+                                            appendTo="body"
+                                            formControlName="ClientID"
+                                            placeholder="Select Client"
+                                            (onChange)="onChangeClient($event)"
+                                            optionValue="clientID"
+                                            optionLabel="clientName"></p-dropdown>
+                                <!--<input id="firstname6" type="text" pInputText formControlName="ClientName" placeholder="Client Name" maxlength="200" [ngClass]="{ 'is-invalid': submitted && addeditCandidateFormControls.ClientName.errors }">-->
+                            </div>
+                            <div class="p-md-4 p-pt-0 removed-padding">
+                                <label for="firstname6">Client Type *</label>
+                                <p-dropdown [options]="clientTypeListValues" [disabled]="true"
+                                            appendTo="body"
+                                            formControlName="ClientTypeID"
+                                            placeholder="Select Client Type"
+                                            optionValue="listValueID"
+                                            optionLabel="value"></p-dropdown>
+                            </div>
+                        </div>
+                        <div class="p-grid p-pb-2 mobile-display-block">
+                            <div class="p-md-4 p-pt-0 removed-padding">
+                                <label for="firstname6">Job ID</label>
+                                <input id="firstname6" type="text" pInputText formControlName="JobID" placeholder="Job ID" maxlength="20">
+                            </div>
+                            <div class="p-md-8 p-pt-0 removed-padding">
+                                <label for="firstname6">Job Title</label>
+                                <input id="firstname6" type="text" pInputText formControlName="JobTitle" placeholder="Job Title" maxlength="200">
+                            </div>
+                        </div>
+                        <div class="p-grid p-pb-2 mobile-display-block">
+                            <div class="p-md-4 p-pt-0 removed-padding">
+                                <label for="firstname6">Requirement Type *</label>
+                                <p-dropdown [options]="RequirementTypeListValues" [ngClass]="{ 'is-invalid-dropdown': submitted && addeditCandidateFormControls.RequirementTypeID.errors }"
+                                            appendTo="body"
+                                            formControlName="RequirementTypeID"
+                                            (onChange)="onChangeRequirementType($event)"
+                                            placeholder="Select Requirement Type"
+                                            optionValue="listValueID"
+                                            optionLabel="value"></p-dropdown>
+                            </div>
+                            <div class="p-md-4 p-pt-0 removed-padding">
+                                <label for="firstname6">Duration (Months)*</label>
+                                <p-inputNumber formControlName="Duration" [disabled]="isDurationDisabled" mode="decimal" inputId="withoutgrouping" placeholder="Duration" [useGrouping]="false" [ngClass]="{ 'is-invalid': submitted && addeditCandidateFormControls.Duration.errors }">
+                                </p-inputNumber>
+                            </div>
+                            <div class="p-md-4 p-pt-0 removed-padding">
+                                <label for="firstname6">Primary Skills</label>
+                                <p-chips formControlName="PrimarySkills" placeholder="Primary Skills" [allowDuplicate]="false" [addOnTab]="true" [addOnBlur]="true"></p-chips>
+                            </div>
+                        </div>
+                        <div class="p-grid p-pb-2 mobile-display-block">
+                            <div class="p-md-4 p-pt-0 removed-padding">
+                                <label for="firstname6">Client Rate</label>
+                                <p-inputNumber formControlName="ClientRate" mode="decimal" [maxlength]="5" inputId="withoutgrouping" placeholder="Client Rate" [useGrouping]="false">
+                                </p-inputNumber>
+                            </div>
+                            <div class="p-md-4 p-pt-0 removed-padding">
+                                <label for="firstname6">Pay Rate Type *</label>
+                                <p-dropdown [options]="PayRateTypeListValues" [ngClass]="{ 'is-invalid-dropdown': submitted && addeditCandidateFormControls.PayRateTypeID.errors }"
+                                            appendTo="body"
+                                            formControlName="PayRateTypeID"
+                                            placeholder="Select PayRate Type"
+                                            optionValue="listValueID"
+                                            optionLabel="value"></p-dropdown>
+                            </div>
+                            <div class="p-md-4 p-pt-0 removed-padding">
+                                <label for="firstname6">Pay Rate</label>
+                                <p-inputNumber formControlName="PayRate" mode="decimal" [maxlength]="5" inputId="withoutgrouping" placeholder="Pay Rate" [useGrouping]="false">
+                                </p-inputNumber>
+                            </div>
+
+                        </div>
+                        <div class="p-grid p-pb-2 mobile-display-block">
+                            <div class="p-md-4  p-pt-0 removed-padding">
+                                <label for="firstname6">City</label>
+                                <input type="text" formControlName="City" pInputText placeholder="City" maxlength="50" />
+                            </div>
+                            <div class="p-md-4 p-pt-0 removed-padding">
+                                <label for="firstname6">State *</label>
+                                <p-dropdown [options]="stateList" [ngClass]="{ 'is-invalid-dropdown': submitted && addeditCandidateFormControls.StateID.errors }"
+                                            appendTo="body"
+                                            formControlName="StateID"
+                                            placeholder="Select State"
+                                            optionValue="stateID"
+                                            optionLabel="stateName"></p-dropdown>
+                            </div>
+                            <div class="p-md-4 p-pt-0 removed-padding">
+                                <label for="firstname6">Country *</label>
+                                <p-dropdown [options]="countryList" [ngClass]="{ 'is-invalid-dropdown': submitted && addeditCandidateFormControls.CountryID.errors }"
+                                            appendTo="body"
+                                            formControlName="CountryID"
+                                            placeholder="Select Country"
+                                            optionValue="countryID"
+                                            optionLabel="countryName"></p-dropdown>
+                            </div>
+
+                        </div>
+                        <div class="p-grid p-pb-2 mobile-display-block">
+                            <div class="p-md-4 removed-padding " style="display: flex; justify-content: flex-start; align-items: center;">
+                                <div class="field-checkbox">
+                                    <p-checkbox formControlName="IsRemote" binary="true" inputId="binary"></p-checkbox>
+                                    <label for="binary" style="padding-left: 5px;">Remote</label>
+                                </div>
+                            </div>
+                            <div class="p-md-4 p-pt-0 removed-padding">
+                                <label for="firstname6">Interview Type *</label>
+                                <p-dropdown [options]="InterviewTypeListValues" [ngClass]="{ 'is-invalid-dropdown': submitted && addeditCandidateFormControls.InterviewTypeID.errors }"
+                                            appendTo="body"
+                                            formControlName="InterviewTypeID"
+                                            placeholder="Select Interview Type"
+                                            optionValue="listValueID"
+                                            optionLabel="value"></p-dropdown>
+                            </div>
+                            <div class="p-md-4 p-pt-0 removed-padding">
+                                <label for="firstname6">Status *</label>
+                                <p-dropdown [options]="StatusList" [ngClass]="{ 'is-invalid-dropdown': submitted && addeditCandidateFormControls.StatusID.errors }"
+                                            appendTo="body"
+                                            formControlName="StatusID"
+                                            placeholder="Select Status"
+                                            optionValue="listValueID"
+                                            optionLabel="value"></p-dropdown>
+                            </div>
+                        </div>
+                        <div class="p-grid p-pb-2 mobile-display-block">
+                            <div class="p-md-4 removed-padding" style="display: flex; justify-content: flex-start; align-items: center;">
+                                <div class="field-checkbox">
+                                    <p-checkbox formControlName="IsHotRequirement" binary="true" inputId="binary"></p-checkbox>
+                                    <label for="binary" style="padding-left: 5px;">Hot Requirement</label>
+                                </div>
+                            </div>
+                            <div class="p-md-4 removed-padding" style="display: flex; justify-content: flex-start; align-items: center;">
+                                <div class="field-checkbox">
+                                    <p-checkbox formControlName="IsPublic" binary="true" inputId="binary"></p-checkbox>
+                                    <label for="binary" style="padding-left: 5px;">Public</label>
+                                </div>
+                            </div>
+                            <div class="p-md-4 p-pt-0 removed-padding">
+                                <label for="firstname6">Priority</label>
+                                <p-inputNumber formControlName="Priority" mode="decimal" [maxlength]="5" inputId="withoutgrouping" placeholder="Priority" [useGrouping]="false">
+                                </p-inputNumber>
+                            </div>
+                        </div>
+                        <div class="p-grid p-pb-2 mobile-display-block">
+                            <div class="p-md-4 p-pt-0 removed-padding">
+                                <label for="firstname6">Assigned To </label>
+                                <p-dropdown [options]="assignedToList"
+                                            appendTo="body"
+                                            formControlName="AssignedTo"
+                                            placeholder="Select Assigned To"
+                                            optionValue="userID"
+                                            optionLabel="userName"></p-dropdown>
+                            </div>
+                            <div class="p-md-4 p-pt-0 removed-padding">
+                                <label for="firstname6">Reviewer </label>
+                                <p-dropdown [options]="reviewerList"
+                                            appendTo="body"
+                                            formControlName="ReviewerID"
+                                            placeholder="Select Reviewer"
+                                            optionValue="userID"
+                                            optionLabel="userName"></p-dropdown>
+                            </div>
+                        </div>
+                        <div class="p-grid p-pb-2 mobile-display-block">
+                            <div class="p-md-12 p-pt-0 removed-padding">
+                                <label for="firstname6">Internal Note</label>
+                                <textarea rows="2" formControlName="InternalNote" cols="30" maxlength="500" pInputTextarea></textarea>
+                            </div>
+                        </div>
+                        <div class="p-grid p-pb-2 mobile-display-block">
+                            <div class="p-md-12 p-pt-0 removed-padding">
+                                <label for="firstname6">Job Description</label>
+                                <editor formControlName="JobDesc" [init]="{ height: 400}"></editor>
+
+                                <!--<pre>
+                                <textarea formControlName="JobDesc" rows="20" cols="30" pInputTextarea></textarea>
+                                </pre>-->
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="p-col-12" style="padding-right: 0px; display: flex; justify-content: end; padding-top: 1rem;">
+                        <div style="display: flex;">
+                            <button pButton pRipple type="button" label="Save" [disabled]="isSavebuttonDisabled" class="p-button-raised p-mr-2 p-mb-2" (click)="saveCandidate()"></button>
+                            <button pButton pRipple type="button" label="Cancel" class="p-button-raised p-button-danger p-mr-2 p-mb-2" style="margin-right: 0px !important;" (click)="Cancel()"></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<p-dialog [(visible)]="isCandidateListDisplay" [style]="{width: '1150px'}" [header]=headerTextForCandidateList [modal]="true" styleClass="p-fluid">
+    <div class="card">
+        <p-table #dtCandidate [value]="candidateList" [columns]="cols" selectionMode="single"
+                 [(selection)]="selectedCandidate"
+                 [rows]="10"
+                 dataKey="candidateID"
+                 [metaKeySelection]="true"
+                 [paginator]="false"
+                 sortField="firstName" [sortOrder]="1"
+                 [globalFilterFields]="['firstName','lastName','companyName','phone', 'email','workAuthorization','availability','stateName','isRelocation','isActive', 'skills']"
+                 [rowHover]="true"
+                 styleClass="p-datatable-customers" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)">
+            <ng-template pTemplate="caption">
+                <div class="p-d-flex p-flex-column p-flex-md-row  table-header">
+                    <div class="p-md-3 p-p-0">
+                        <div class=" p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="dtCandidate.filterGlobal($event.target.value, 'contains')" placeholder="Search..." />
+                        </div>
+                    </div>
+                    <div class="p-md-3 p-pl-5 p-pt-0 p-pb-0 p-pr-0">
+                        <p-dropdown [options]="isPublicList"
+                                    appendTo="body"
+                                    [(ngModel)]="isCandidatePublicID"
+                                    placeholder="Select Public"
+                                    (onChange)="onChangeCandidatePublic($event)"
+                                    optionValue="value"
+                                    optionLabel="label"></p-dropdown>
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header" let-columns="columns">
+                <tr>
+                    <th style="width: 3rem">
+                        <!-- <p-tableHeaderCheckbox></p-tableHeaderCheckbox>-->
+                    </th>
+                    <th pSortableColumn="firstName">First Name <p-sortIcon field="firstName"></p-sortIcon></th>
+                    <th pSortableColumn="lastName">Last Name <p-sortIcon field="lastName"></p-sortIcon></th>
+                    <th pSortableColumn="workAuthorization"> Work Auth <p-sortIcon field="workAuthorization"></p-sortIcon></th>
+                    <th pSortableColumn="jobTitle">Title <p-sortIcon field="jobTitle"></p-sortIcon></th>
+                    <th pSortableColumn="skills">Skills <p-sortIcon field="skills"></p-sortIcon></th>
+                    <th style="width: 30px;" pSortableColumn="billingRate">Rate <p-sortIcon field="billingRate"></p-sortIcon></th>
+                    <th pSortableColumn="experience">Experience <p-sortIcon field="experience"></p-sortIcon></th>
+                    <!--<th pSortableColumn="availability">Availability <p-sortIcon field="availability"></p-sortIcon></th>-->
+                    <th pSortableColumn="stateName">State <p-sortIcon field="stateName"></p-sortIcon></th>
+                    <th pSortableColumn="isRelocation">Relocation<p-sortIcon field="isRelocation"></p-sortIcon></th>
+                </tr>
+                <tr>
+                    <th style="width: 3rem">
+                        <!-- <p-tableHeaderCheckbox></p-tableHeaderCheckbox>-->
+                    </th>
+                    <th>
+                        <input type="text" class="p-column-filter" pInputText placeholder="First Name" (input)="dtCandidate.filter($event.target.value,'firstName','contains')">
+
+                        <!--<p-columnFilter type="text" field="firstName" placeholder="Search firstName" display="false"></p-columnFilter>-->
+                    </th>
+                    <th>
+                        <input type="text" class="p-column-filter" pInputText placeholder="Last Name" (input)="dtCandidate.filter($event.target.value,'lastName','contains')">
+                    </th>
+                    <th>
+                        <input type="text" class="p-column-filter" pInputText placeholder="Work Auth" (input)="dtCandidate.filter($event.target.value,'workAuthorization','contains')">
+                    </th>
+                    <th>
+                        <input type="text" class="p-column-filter" pInputText placeholder="Title" (input)="dtCandidate.filter($event.target.value,'jobTitle','contains')">
+                    </th>
+                    <th>
+                        <input type="text" class="p-column-filter" pInputText placeholder="Skills" (input)="dtCandidate.filter($event.target.value,'skills','contains')">
+                    </th>
+                    <th>
+                        <input type="text" class="p-column-filter" pInputText placeholder="Rate" (input)="dtCandidate.filter($event.target.value,'billingRate','contains')">
+                    </th>
+                    <th>
+                        <input type="text" class="p-column-filter" pInputText placeholder="Experience" (input)="dtCandidate.filter($event.target.value,'experience','contains')">
+                    </th>
+                    <th>
+                        <input type="text" class="p-column-filter" pInputText placeholder="State Name" (input)="dtCandidate.filter($event.target.value,'stateName','contains')">
+                    </th>
+                    <th>
+                        <p-columnFilter field="isRelocation" matchMode="equals" [showMenu]="false" [showOperator]="false">
+                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                <p-dropdown [ngModel]="value" [options]="isAtciveRelocationStatus" (onChange)="filter($event.value)" placeholder="Any" [showClear]="false">
+                                    <ng-template let-option pTemplate="item">
+                                        <span>{{option.label}}</span>
+                                    </ng-template>
+                                </p-dropdown>
+                            </ng-template>
+                        </p-columnFilter>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-candidate let-columns="columns" let-rowIndex="rowIndex">
+                <tr [pSelectableRow]="candidate" [pSelectableRowIndex]="rowIndex" [class.ui-state-highlight]="candidate === highlighted">
+                    <td>
+                        <p-tableRadioButton [pSelectableRow]="candidate" [value]="candidate"></p-tableRadioButton>
+                        <!-- <p-tableCheckbox [value]="candidate" (click)="$event.stopPropagation()"></p-tableCheckbox>-->
+                    </td>
+                    <td>
+                        <span class="p-column-title">First Name</span>
+                        {{candidate.firstName}}
+                    </td>
+                    <td>
+                        <span class="p-column-title">Last Name</span>
+                        {{candidate.lastName}}
+                    </td>
+                    <td>
+                        <span class="p-column-title">Work Auth</span>
+                        {{candidate.workAuthorization}}
+                    </td>
+                    <td>
+                        <span class="p-column-title">Title</span>
+                        {{candidate.jobTitle}}
+                    </td>
+                    <td>
+                        <span class="p-column-title">Skills</span>
+                        {{candidate.skills}}
+                    </td>
+                    <td style="text-align: center;">
+                        <span class="p-column-title">Billing Rate</span>
+                        {{candidate.billingRate}}
+                    </td>
+
+                    <td>
+                        <span class="p-column-title">Experience</span>
+                        {{candidate.experience !== null ? candidate.experience + ' Years' : ''}}
+                    </td>
+                    <td>
+                        <span class="p-column-title">State</span>
+                        {{candidate.stateName}}
+                    </td>
+                    <td>
+                        <span class="p-column-title">Relocation</span>
+                        {{candidate.isRelocation === true ? 'Yes' : 'No'}}
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+        <div class="p-col-12 p-pt-4" *ngIf="isCandidateReviewQueueForm">
+            <div class="p-pl-2 p-fluid p-formgrid p-grid review-queue">
+                Review Queue
+            </div>
+            <form [formGroup]="candidateReviewQueueForm">
+                <fieldset style="border: 1px solid #ced4da !important;">
+                    <div class="p-col-12">
+                        <div class="p-fluid p-formgrid p-grid">
+                            <div class="p-md-6 p-pt-0">
+                                <label for="firstname6">Rate Type</label>
+                                <p-dropdown [options]="PayRateTypeListValues" [ngClass]="{ 'is-invalid-dropdown': isCandidateSubmitted && candidateReviewQueueFormControls.RateTypeID.errors }"
+                                            appendTo="body"
+                                            formControlName="RateTypeID"
+                                            placeholder="Select Rate Type"
+                                            optionValue="listValueID"
+                                            optionLabel="value"></p-dropdown>
+                            </div>
+                            <div class="p-md-6 p-pt-0">
+                                <label for="firstname6">Rate</label>
+                                <p-inputNumber formControlName="Rate" mode="decimal" [maxlength]="5" inputId="withoutgrouping" placeholder="Rate" [useGrouping]="false" [ngClass]="{ 'is-invalid': isCandidateSubmitted && candidateReviewQueueFormControls.Rate.errors }">
+                                </p-inputNumber>
+                            </div>
+                            <div class="p-md-12 p-pt-0">
+                                <label for="firstname6">Note Description</label>
+                                <textarea rows="5" formControlName="Note" cols="30" pInputTextarea></textarea>
+                            </div>
+                        </div>
+                        <div class="p-col-12" style="padding-right: 0px; display: flex; justify-content: end; padding-top: 1rem;">
+                            <div style="display: flex;">
+                                <button pButton pRipple type="button" label="Submit" class="p-button-raised p-mr-2 p-mb-2" (click)="submitCandidate()"></button>
+                                <button pButton pRipple type="button" label="Cancel" class="p-button-raised p-button-danger p-mr-2 p-mb-2" style="margin-right: 0px !important;" (click)="CancelCandidateReview()"></button>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+
+    </div>
+</p-dialog>
+<p-toast></p-toast>

@@ -1,0 +1,326 @@
+<div class="p-grid mobile-display-grid" *ngIf="rolePermission !== null && rolePermission !== undefined && rolePermission.view === true">
+    <div class="p-col-12 hidden-web">
+        <div class="card">
+            <p-toolbar>
+                <ng-template pTemplate="left">
+                    <div class="p-d-flex p-flex-column p-flex-md-row table-header">
+                        <div class="p-input-icon-left" style="font-size:23px;">
+                            Requirements
+                        </div>
+                    </div>
+                </ng-template>
+            </p-toolbar>
+            <p-table #dt [value]="requirementList" [columns]="cols" [reorderableColumns]="true" [rows]="10" [paginator]="true"
+                     [globalFilterFields]="['jobID','jobTitle','requirementType', 'primarySkills','duration','city', 'priority','assignedToName','statusName']"
+                     [rowHover]="true"
+                     sortField="datePosted" [sortOrder]="-1"
+                     styleClass="p-datatable-customers"
+                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true"
+                     [autoLayout]="true">
+                <ng-template pTemplate="caption">
+                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between table-header">
+                        <div class="p-md-7 p-p-0 p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                            <div class=" p-input-icon-left">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search..." />
+                            </div>
+                            <div *ngIf="userDetails.roleShort !== roleShortConstants.SUPERADMIN">
+                                <!--<div style="padding-right: 4em;" >-->
+                                <p-dropdown [options]="isPublicList"
+                                            appendTo="body"
+                                            [(ngModel)]="isPublicID"
+                                            placeholder="Select Public"
+                                            (onChange)="onChangePublic($event)"
+                                            optionValue="value"
+                                            optionLabel="label"></p-dropdown>
+                            </div>
+                            <div>
+                                <label class="p-pr-3" for="firstname6">Status :</label>
+                                <p-multiSelect [options]="StatusList"
+                                               defaultLabel="Select a Status"
+                                               [(ngModel)]="selectedStatus"
+                                               (onChange)="onChangeStatuss($event)"
+                                               optionValue="listValueID"
+                                               optionLabel="value"></p-multiSelect>
+                            </div>
+                        </div>
+                        <div class="p-md-4 p-p-0 p-d-flex p-flex-column p-flex-md-row" [ngClass]="userDetails.roleShort === 'SUPERADMIN' ? 'p-jc-md-between' : 'p-jc-md-end'">
+                            <div *ngIf="userDetails.roleShort === roleShortConstants.SUPERADMIN">
+                                <label class="p-pr-3" for="firstname6">Company :</label>
+                                <p-multiSelect [options]="companyList"
+                                               defaultLabel="Select a Company"
+                                               [(ngModel)]="selectedCompanys"
+                                               (onChange)="onChangeCompany($event)"
+                                               optionValue="companyID"
+                                               optionLabel="companyName"></p-multiSelect>
+                            </div>
+                            <div [ngClass]="{'display-none': isAddRolePermission}">
+                                <button pButton pRipple label="Add" style="margin: 0px !important;" icon="pi pi-plus" class="p-button-primary p-mr-2 p-mb-2" (click)="addrequirment()"></button>
+                            </div>
+                        </div>
+
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width:1.4rem;"></th>
+                        <th style="width:2rem;" pSortableColumn="jobID">Job ID <p-sortIcon field="jobID"></p-sortIcon></th>
+                        <th pSortableColumn="jobTitle">Job Title<p-sortIcon field="jobTitle"></p-sortIcon></th>
+                        <th pSortableColumn="requirementType">Type<p-sortIcon field="requirementType"></p-sortIcon></th>
+                        <th pSortableColumn="payRate">{{isPayRateText}}<p-sortIcon field="payRate"></p-sortIcon></th>
+                        <th pSortableColumn="duration">Duration<p-sortIcon field="duration"></p-sortIcon></th>
+                        <th pSortableColumn="datePosted">Posted<p-sortIcon field="datePosted"></p-sortIcon></th>
+                        <th pSortableColumn="assignedToName">Assigned To<p-sortIcon field="assignedToName"></p-sortIcon></th>
+                        <th pSortableColumn="status">Status<p-sortIcon field="status"></p-sortIcon></th>
+                        <th pSortableColumn="primarySkills">Skills<p-sortIcon field="primarySkills"></p-sortIcon></th>
+                        <th pSortableColumn="isPublic">Public <p-sortIcon field="isPublic"></p-sortIcon></th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-requirment let-index="rowIndex">
+                    <tr [pReorderableRow]="index">
+                        <td>
+                            <span class="pi pi-bars" pReorderableRowHandle></span>
+                        </td>
+                        <td>
+                            <span class="p-column-title">JobID</span>
+                            {{requirment.jobID}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">JobTitle</span>
+                            <div>
+                                <span style="font-weight: 600;">
+                                    {{requirment.jobTitle}}
+                                    <span *ngIf="requirment.isHotRequirement === true">
+                                        <i class="pi pi-check p-pl-2"></i>
+                                    </span>
+                                </span><br />
+                                       <span> {{isPublicID !== 1 ? requirment.clientName: '****'}} - {{requirment?.city !== null && requirment?.city !== "" ? requirment?.city+',' : ''}} {{requirment?.stateShort}}</span><br />
+                                <!--<span> </span>-->
+                            </div>
+                        </td>
+
+                        <td>
+                            <span class="p-column-title">Type</span>
+                            {{requirment.requirementType}}
+                        </td>
+                        <td style="text-align: center;">
+                            <span class="p-column-title">PayRate</span>
+                            {{requirment.payRate}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Duration</span>
+                            {{requirment.duration != null ? requirment.duration+' Months' : ''}}
+                        </td>
+                        <td style="text-align: center;">
+                            <span class="p-column-title">Posted</span>
+                            <!-- {{requirment.priority}}-->
+                            {{requirment.datePosted | date: 'MM/dd/yyyy'}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">AssignedTo</span>
+                            {{requirment.assignedToName}}
+
+                        </td>
+                        <td>
+                            <span class="p-column-title">Status</span>
+                            {{requirment.status}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Skills</span>
+                            {{requirment.primarySkills}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Public</span>
+                            {{requirment.isPublic === true ? 'Yes' : 'No'}}
+                        </td>
+                        <td style="width:90px;">
+                            <div [ngClass]="{'display-none': isUpdateRolePermission}" style="display: contents;">
+                                <button [disabled]="isPublicID === 0 ? false : true" pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-primary p-mr-2" (click)="editrequirment(requirment)"></button>
+                             </div>
+                                <button pButton pRipple icon="pi pi-microsoft" class="p-button-rounded p-button-primary p-mr-2" (click)="viewRequirement(requirment)"></button>
+                                <p-button class="p-button-rounded p-button-primary p-mr-2 notes-icons" icon="fa fa-commenting-o" (click)="openNotesList(requirment)"></p-button>
+                                <div class="close-button" style="display: contents; justify-content: end;">
+                                    <p-menu #popuclosenMenu [popup]="true" [model]="closenButtonItems"></p-menu>
+                                    <button pButton type="button" (click)="toggleMenuCloseButton(popuclosenMenu, $event, requirment)" [ngClass]="{'closeDisabled': requirment.status.toUpperCase() === requirementStatusConstants.MISS || requirment.status.toUpperCase() === requirementStatusConstants.SUCCESS}" icon="fa fa-caret-square-o-down" class="p-button-rounded p-button-plain p-button-text  notes-icons"></button>
+                                </div>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    <div class="p-d-flex p-ai-center p-jc-between">
+                        In total there are {{requirementList ? requirementList.length : 0 }} requirments.
+                    </div>
+                </ng-template>
+            </p-table>
+        </div>
+
+    </div>
+    <!--// mobile design start-->
+    <div class="hidden-web hidden-mobile">
+        <div class="p-input-icon-left" style="font-size: 23px; padding-bottom: 1rem;">
+            Requirements
+        </div>
+        <div class="p-d-flex mobile-display-block " style="justify-content:space-between; padding-bottom:1rem;">
+            <div class="p-md-6 p-p-0 p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                <div class=" p-input-icon-left mobile-display-grid">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" id="myFilter" (input)="applyFilterGlobal()" placeholder="Search..." />
+                </div>
+                <div style="padding-top:10px;" *ngIf="userDetails.roleShort !== roleShortConstants.SUPERADMIN">
+                    <!--<div style="padding-right: 4em;" >-->
+                    <p-dropdown [options]="isPublicList" class="mobile-display-grid"
+                                appendTo="body"
+                                [(ngModel)]="isPublicID"
+                                placeholder="Select Public"
+                                (onChange)="onChangePublic($event)"
+                                optionValue="value"
+                                optionLabel="label"></p-dropdown>
+                </div>
+                <div style="padding-top:10px;">
+                    <label class="p-pr-3 mobile-card-view-label" style="display: block !important;" for="firstname6">Status :</label>
+                    <p-dropdown [options]="StatusList" class="mobile-display-grid"
+                                appendTo="body"
+                                [(ngModel)]="isStatusID"
+                                placeholder="Select Status"
+                                (onChange)="onChangeStatus($event)"
+                                optionValue="listValueID"
+                                optionLabel="value"></p-dropdown>
+                </div>
+            </div>
+            <div class="p-md-6 p-p-0 p-d-flex p-flex-column p-flex-md-row" [ngClass]="userDetails.roleShort === 'SUPERADMIN' ? 'p-jc-md-between' : 'p-jc-md-end'">
+                <div style="padding-top:10px;" *ngIf="userDetails.roleShort === roleShortConstants.SUPERADMIN">
+                    <label class="p-pr-3 mobile-card-view-label" style="display: block !important;" for="firstname6">Company :</label>
+                    <p-multiSelect [options]="companyList"
+                                   defaultLabel="Select a Company"
+                                   [(ngModel)]="selectedCompanys"
+                                   (onChange)="onChangeCompany($event)"
+                                   optionValue="companyID"
+                                   optionLabel="companyName"></p-multiSelect>
+                </div>
+                <div style="padding-top:10px;" [ngClass]="{'display-none': isAddRolePermission}">
+                    <button pButton pRipple label="Add" style="margin: 0px !important;" icon="pi pi-plus" class="p-button-primary p-mr-2 p-mb-2" (click)="addrequirment()"></button>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="requirementList !== null && requirementList !== undefined && requirementList.length > 0" id="myItems">
+            <div class="card mobile-card-view " style="padding-bottom: 0.5rem; margin-bottom: 1rem;" *ngFor="let requirement of requirementList">
+                <div class="card-body" style="padding-bottom:0.5rem !important;">
+                    <div class="p-fluid p-formgrid p-grid">
+                        <div class="p-col-12 p-pl-0" style="display: flex; justify-content: end;">
+                            <p-menu #popupMenu [popup]="true" [model]="items"></p-menu>
+                            <button pButton type="button" (click)="toggleMenu(popupMenu, $event, requirement)" style="position: absolute; background: white;" icon="pi pi-ellipsis-v" class="p-button-rounded p-button-plain p-button-text"></button>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Job ID :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{requirement?.jobID}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Job Title :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                <span style="font-weight: 600;">
+                                    {{requirement?.jobTitle}}
+                                    <span *ngIf="requirement?.isHotRequirement === true">
+                                        <i class="pi pi-check p-pl-2"></i>
+                                    </span>
+                                </span><br />
+                                <span> {{isPublicID !== 1 ? requirement?.clientName: '****'}}</span><br />
+                                <span> {{requirement?.city !== null && requirement.city !== "" ? requirement?.city+',' : ''}} {{requirement?.stateName}}</span>
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Type:</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{requirement?.requirementType}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Pay Rate :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{requirement?.payRate}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Duration :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{requirement?.duration != null ? requirement?.duration+' Months' : ''}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Posted :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{requirement?.datePosted | date: 'MM/dd/yyyy'}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Assigned To :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{requirement?.assignedToName}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Status :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{requirement?.status}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Skills :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{requirement?.primarySkills}}
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-pl-0" style="display: flex;">
+                            <label class="control-label p-col-4 p-pr-2 mobile-card-view-label">Public :</label>
+                            <div class="p-col-7 p-pl-0 p-pr-0 mobile-card-view-value">
+                                {{requirement?.isPublic === true ? 'Yes' : 'No'}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="dashboard p-grid p-fluid" *ngIf="rolePermission !== null && rolePermission !== undefined && rolePermission.view === false">
+    No View Access for Requirement
+</div>
+<div>
+    <router-outlet></router-outlet>
+</div>
+<div class="p-grid">
+    <div class="p-col-12">
+        <p-dialog [(visible)]="notesDialog" [style]="{width: '900px'}" [header]=addEditHeaderText [modal]="true" styleClass="p-fluid">
+            <div class="p-col-12">
+                <div class="p-fluid p-formgrid ">
+                    <div class="p-grid p-pb-2 p-pt-2 mobile-display-block">
+                        <div class="p-md-12 p-pt-2" *ngIf="noteList.length > 0">
+                            <app-note [data]="noteList"></app-note>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </p-dialog>
+    </div>
+</div>
+<div class="p-grid">
+    <div class="p-col-12 p-pb-0">
+        <p-dialog [(visible)]="isCandidateCloseDialog" [style]="{width: '780px'}" [header]=isCloseCandidateHaderText [modal]="true" styleClass="p-fluid">
+            <div class="p-col-12">
+                <div class="p-fluid p-formgrid ">
+                    <div class="p-grid p-pb-2 p-pt-2 p-pb-0 mobile-display-block">
+                        <div class="p-md-12 p-pt-2 p-pb-0">
+                            <app-candidate-success-miss #candidateSuccessMiss [isCloseCandidate]="isCloseCandidate" (cancel)="CloseCancel()" [requirementID]="requirementID"  (loadRequirmentListDetails)="loadRequirmentList()" [requirementDetails]="requirementDetails"></app-candidate-success-miss>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </p-dialog>
+    </div>
+</div>
+<p-toast></p-toast>
+
+

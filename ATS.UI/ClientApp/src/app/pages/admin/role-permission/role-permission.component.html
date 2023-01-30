@@ -1,0 +1,100 @@
+<div class="p-grid mobile-display-grid">
+    <div class="p-col-12 hidden-web">
+        <div class="card">
+            <p-toolbar>
+                <ng-template pTemplate="left">
+                    <div class="p-d-flex p-flex-column p-flex-md-row table-header">
+                        <div class="p-input-icon-left" style="font-size:23px;">
+                            Role Permissions
+                        </div>
+                    </div>
+                </ng-template>
+            </p-toolbar>
+            <p-table #dt [value]="rolePermissionList" [columns]="cols" [rows]="10" [paginator]="true"
+                     [globalFilterFields]="['roleName','moduleName','view','add', 'update','delete']"
+                     [rowHover]="true"
+                     sortField="moduleName" [sortOrder]="1"
+                     styleClass="p-datatable-customers"
+                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+                <ng-template pTemplate="caption">
+                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between table-header">
+                        <div class="p-md-6 p-p-0 p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                            <div class=" p-input-icon-left">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search..." />
+                            </div>
+                            <div style="padding-right: 4em;">
+                                <!--<div style="padding-right: 4em;" >-->
+                                <label class="p-pr-2" for="firstname6">Role :</label>
+                                <p-dropdown [options]="roles"
+                                            appendTo="body"
+                                            [(ngModel)]="roleID"
+                                            placeholder="Select role"
+                                            (onChange)="onChangeRole($event)"
+                                            optionValue="roleID"
+                                            optionLabel="roleName"></p-dropdown>
+                            </div>
+                        </div>
+                        <div class="p-md-6 p-p-0 p-d-flex p-flex-column p-flex-md-row p-jc-md-end">
+                            <div *ngIf="roleID !== 0">
+                                <button pButton pRipple label="Add" style="margin: 0px !important;" icon="pi pi-plus" class="p-button-primary p-mr-2 p-mb-2" (click)="addRole()"></button>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="roleName">Role Name <p-sortIcon field="roleName"></p-sortIcon></th>
+                        <th pSortableColumn="moduleName">Module Name<p-sortIcon field="moduleName"></p-sortIcon></th>
+                        <th pSortableColumn="view">View <p-sortIcon field="view"></p-sortIcon></th>
+                        <th pSortableColumn="add"> Add <p-sortIcon field="add"></p-sortIcon></th>
+                        <th pSortableColumn="edit">Edit <p-sortIcon field="edit"></p-sortIcon></th>
+                        <th pSortableColumn="delete">Delete <p-sortIcon field="delete"></p-sortIcon></th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rolePermission>
+                    <tr>
+                        <td>
+                            <span class="p-column-title">Role Name</span>
+                            {{rolePermission?.roleName}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Module Name</span>
+                            {{rolePermission?.moduleName}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">View</span>
+                            {{rolePermission.view === true ? 'Yes' : 'No'}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Add</span>
+                            {{rolePermission.add === true ? 'Yes' : 'No'}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Edit</span>
+                            {{rolePermission.update === true ? 'Yes' : 'No'}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Delete</span>
+                            {{rolePermission.delete === true ? 'Yes' : 'No'}}
+                        </td>
+                        <td>
+                            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-primary p-mr-2" (click)="editRole(rolePermission)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    <div class="p-d-flex p-ai-center p-jc-between">
+                        In total there are {{rolePermissionList ? rolePermissionList.length : 0 }} Role Permission.
+                    </div>
+                </ng-template>
+            </p-table>
+        </div>
+
+    </div>
+    <div>
+        <app-add-edit-role-permission #addEditRolePermission [roleID]="roleID" (loadRolePermissionDetails)="loadRolePermissions($event)"></app-add-edit-role-permission>
+    </div>
+</div>
+<p-toast></p-toast>
